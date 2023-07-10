@@ -1,0 +1,6 @@
+openpyxl
+rouge-score
+bert-score
+pandas
+transformers
+torch
