@@ -30,7 +30,7 @@ st.markdown(f"**Category**\n\n{selected_row['topic']}")
 
 st.markdown(f"**Original Text:**\n\n{selected_row['text']}")
 
-st.markdown(f"**Original Summary:**\n\n{selected_row['summary']}")
+st.markdown(f"**Original Summary:**\n\n{selected_row['original_summary']}")
 
 st.markdown(f"**Generated Summary:**\n\n{selected_row['generated_summary']}")
 
