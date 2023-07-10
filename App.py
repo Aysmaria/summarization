@@ -7,7 +7,7 @@ def load_data(file_path):
 def save_data(file_path, data):
     data.to_excel(file_path, index=False)
 
-data = load_data('test_params_combos.xlsx')
+data = load_data('data_sample.xlsx_text-davinci-003.csv')
 
 st.title("Text Summarization Analysis")
 
