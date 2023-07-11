@@ -1,18 +1,29 @@
 import streamlit as st
 import pandas as pd
-
+'''
 def load_data(file_path):
     return pd.read_csv(file_path)
-
+'''
 def save_data(file_path, data):
     data.to_excel(file_path, index=False)
 
-data = load_data('data_sample.xlsx_text-davinci-003.csv')
+# data = load_data('data_sample.xlsx_text-davinci-003.csv')
 
 st.title("Text Summarization Analysis")
 
+# Read in data from the Google Sheet.
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
+@st.cache_data(ttl=600)
+def load_data(sheets_url):
+    csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
+    return pd.read_csv(csv_url)
 
+df = load_data(st.secrets["public_gsheets_url"])
 
+# Print results.
+for row in df.itertuples():
+    st.write(f"{row.name} has a :{row.pet}:")
+'''
 if 'selected_index' not in st.session_state:
     st.session_state['selected_index'] = 0
 
@@ -143,3 +154,5 @@ if st.button("Next"):
     st.session_state['comment'] = ''
     st.session_state['category'] = categories[0]
     st.experimental_rerun()
+
+'''
