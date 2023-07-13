@@ -1,6 +1,8 @@
 import streamlit as st
 import pandas as pd
 from shillelagh.backends.apsw.db import connect
+from google.oauth2 import service_account
+from gsheetsdb import connect
 '''
 def load_data(file_path):
     return pd.read_excel(file_path)
@@ -14,27 +16,30 @@ data = load_data('test_params_combos.xlsx')
 # Define the URL of your Google Sheet (you need to make sure that it's publicly accessible)
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/1_n7IPbpOahJRsLDAkNdVSFROH7Puwb4n/edit?usp=sharing&ouid=117460474836199216753&rtpof=true&sd=true"
 
-# Create a connection using Shillelagh
-connection = connect(":memory:",
-                     adapter_kwargs = {
-                            "gsheetsapi": {
-                            "service_account_info":  st.secrets["gcp_service_account"]
-                                    }
-                                        }
-                        )
 
+# Create a connection object.
+credentials = service_account.Credentials.from_service_account_info(
+    st.secrets["gcp_service_account"],
+    scopes=[
+        "https://www.googleapis.com/auth/spreadsheets",
+    ],
+)
+conn = connect(credentials=credentials)
 
-def make_dataframe(executed_query):
-    import pandas as pd
-    df = pd.DataFrame(executed_query.fetchall())
-    df.columns = ["col1", "col2", "col3"]
-    return df
+# Perform SQL query on the Google Sheet.
+# Uses st.cache_data to only rerun when the query changes or after 10 min.
+@st.cache_data(ttl=600)
+def run_query(query):
+    rows = conn.execute(query, headers=1)
+    rows = rows.fetchall()
+    return rows
 
+sheet_url = st.secrets["private_gsheets_url"]
+rows = run_query(f'SELECT * FROM "{sheet_url}"')
 
-with st.spinner(text="In progress..."):
-    sheet_url = st.secrets["private_gsheets_url"]
-    query = f'SELECT * FROM "{sheet_url}"'
-    df = make_dataframe(connection.execute(query))
+# Print results.
+for row in rows:
+    st.write(f"{row.name} has a :{row.pet}:")
 
 '''
 st.title("Text Summarization Analysis")
