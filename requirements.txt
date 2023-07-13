@@ -8,3 +8,4 @@ shillelagh
 gsheetsdb
 gspread_pandas
 google-auth
+google_api_python_client
