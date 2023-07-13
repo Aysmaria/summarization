@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import gspread as gspread
+import gspread
 '''
 def load_data(file_path):
     return pd.read_excel(file_path)
@@ -139,31 +139,26 @@ if st.button("Show Additional Information"):
         if column in selected_row:
             st.write(f"{column}: {selected_row[column]}")
 
+
+
 if st.button("Next"):
     scores = [st.session_state[criterion] for criterion in criteria]
     for i, criterion in enumerate(criteria):
-        data.at[selected_index, criterion] = scores[i]
-    data.at[selected_index, 'Comment'] = st.session_state['comment']
-    data.at[selected_index, 'Category'] = st.session_state['category']
+        # The next row index is (selected_index + 2) because Google Sheets indexes start from 1, not 0.
+        # For the column, you should find the column index of your criterion (you may need to update this)
+        sheet.update_cell(selected_index + 2, 82, scores[i])  # replace 82 with actual column number
+    # You should replace 'column_number' with the actual column number for 'Comment' and 'Category'
+    sheet.update_cell(selected_index + 2, 83, st.session_state['comment'])  # replace 83 with actual column number
+    sheet.update_cell(selected_index + 2, 84, st.session_state['category'])  # replace 84 with actual column number
 
-    if st.button("Next"):
-        scores = [st.session_state[criterion] for criterion in criteria]
-        for i, criterion in enumerate(criteria):
-            # The next row index is (selected_index + 2) because Google Sheets indexes start from 1, not 0.
-            # For the column, you should find the column index of your criterion (you may need to update this)
-            sheet.update_cell(selected_index + 2, 82, scores[i])
-        # You should replace 'column_number' with the actual column number for 'Comment' and 'Category'
-        sheet.update_cell(selected_index + 2, 83, st.session_state['comment'])
-        sheet.update_cell(selected_index + 2, 84, st.session_state['category'])
+    # Update the selected_index for the next iteration
+    st.session_state['selected_index'] = (selected_index + 1) % len(sheet.get_all_records())
 
-        # Update the selected_index for the next iteration
-        st.session_state['selected_index'] = (selected_index + 1) % len(sheet)
+    # Reset the criteria scores, comment and category for the next iteration
+    for criterion in criteria:
+        st.session_state[criterion] = 0
+    st.session_state['comment'] = ''
+    st.session_state['category'] = categories[0]
 
-        # Reset the criteria scores, comment and category for the next iteration
-        for criterion in criteria:
-            st.session_state[criterion] = 0
-        st.session_state['comment'] = ''
-        st.session_state['category'] = categories[0]
-
-        # This will rerun the script, effectively refreshing the page
-        st.experimental_rerun()
+    # This will rerun the script, effectively refreshing the page
+    st.experimental_rerun()
