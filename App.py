@@ -1,4 +1,3 @@
-import streamlit as st
 import pandas as pd
 import streamlit as st
 
@@ -11,7 +10,7 @@ def load_data(sheets_url):
 
 df = load_data(st.secrets["public_gsheets_url"])
 
-# Print results.
 for row in df.itertuples():
-    st.write(f"{row} has a:")
+    st.write(f"Column1: {row}")
+
 
