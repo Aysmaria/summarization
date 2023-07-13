@@ -1,99 +1,105 @@
-# Streamlit-Google Sheet
-## Modules
+import google_auth_httplib2
+import httplib2
+import pandas as pd
 import streamlit as st
-from pandas import DataFrame
-
-from gspread_pandas import Spread, Client
 from google.oauth2 import service_account
+from googleapiclient.discovery import build
+from googleapiclient.http import HttpRequest
+
+SCOPE = "https://www.googleapis.com/auth/spreadsheets"
+SPREADSHEET_ID = "1QlPTiVvfRM82snGN6LELpNkOwVI1_Mp9J9xeJe-QoaA"
+SHEET_NAME = "test_data_sample.xlsx_gpt-3"
+GSHEET_URL = f"https://docs.google.com/spreadsheets/d/{SPREADSHEET_ID}"
 
 
-# Create a Google Authentication connection object
-scope = ['https://spreadsheets.google.com/feeds',
-         'https://www.googleapis.com/auth/drive']
+@st.experimental_singleton()
+def connect_to_gsheet():
+    # Create a connection object.
+    credentials = service_account.Credentials.from_service_account_info(
+        st.secrets["gcp_service_account"],
+        scopes=[SCOPE],
+    )
 
-credentials = service_account.Credentials.from_service_account_info(
-    st.secrets["gcp_service_account"], scopes=scope)
-client = Client(scope=scope, creds=credentials)
-spreadsheetname = "test_data_sample.xlsx_gpt-3"
-spread = Spread(spreadsheetname, client=client)
+    # Create a new Http() object for every request
+    def build_request(http, *args, **kwargs):
+        new_http = google_auth_httplib2.AuthorizedHttp(
+            credentials, http=httplib2.Http()
+        )
+        return HttpRequest(new_http, *args, **kwargs)
 
-# Check the connection
-st.write(spread.url)
-
-sh = client.open(spreadsheetname)
-worksheet_list = sh.worksheets()
-
-'''
-# Functions
-@st.cache()
-# Get our worksheet names
-def worksheet_names():
-    sheet_names = []
-    for sheet in worksheet_list:
-        sheet_names.append(sheet.title)
-    return sheet_names
+    authorized_http = google_auth_httplib2.AuthorizedHttp(
+        credentials, http=httplib2.Http()
+    )
+    service = build(
+        "sheets",
+        "v4",
+        requestBuilder=build_request,
+        http=authorized_http,
+    )
+    gsheet_connector = service.spreadsheets()
+    return gsheet_connector
 
 
-# Get the sheet as dataframe
-def load_the_spreadsheet(spreadsheetname):
-    worksheet = sh.worksheet(spreadsheetname)
-    df = DataFrame(worksheet.get_all_records())
+def get_data(gsheet_connector) -> pd.DataFrame:
+    values = (
+        gsheet_connector.values()
+        .get(
+            spreadsheetId=SPREADSHEET_ID,
+            range=f"{SHEET_NAME}!A:E",
+        )
+        .execute()
+    )
+
+    df = pd.DataFrame(values["values"])
+    df.columns = df.iloc[0]
+    df = df[1:]
     return df
 
 
-# Update to Sheet
-def update_the_spreadsheet(spreadsheetname, dataframe):
-    col = ['Compound CID', 'Time_stamp']
-    spread.df_to_sheet(dataframe[col], sheet=spreadsheetname, index=False)
-    st.sidebar.info('Updated to GoogleSheet')
+def add_row_to_gsheet(gsheet_connector, row) -> None:
+    gsheet_connector.values().append(
+        spreadsheetId=SPREADSHEET_ID,
+        range=f"{SHEET_NAME}!A:E",
+        body=dict(values=row),
+        valueInputOption="USER_ENTERED",
+    ).execute()
 
 
-st.header('Streamlit Chemical Inventory')
+st.set_page_config(page_title="Bug report", page_icon="🐞", layout="centered")
 
-# Check whether the sheets exists
-what_sheets = worksheet_names()
-# st.sidebar.write(what_sheets)
-ws_choice = st.sidebar.radio('Available worksheets', what_sheets)
+st.title("🐞 Bug report!")
 
-# Load data from worksheets
-df = load_the_spreadsheet(ws_choice)
-# Show the availibility as selection
-select_CID = st.sidebar.selectbox('CID', list(df['Compound CID']))
+gsheet_connector = connect_to_gsheet()
 
-# Now we can use the pubchempy module to dump information
-comp = pcp.Compound.from_cid(select_CID)
-comp_dict = comp.to_dict()  # Converting to a dictinoary
-# What Information look for ?
-options = ['molecular_weight', 'molecular_formula',
-           'charge', 'atoms', 'elements', 'bonds']
-show_me = st.radio('What you want to see?', options)
+st.sidebar.write(
+    f"This app shows how a Streamlit app can interact easily with a [Google Sheet]({GSHEET_URL}) to read or store data."
+)
 
-st.info(comp_dict[show_me])
-name = comp_dict['iupac_name']
-st.markdown(name)
-plot = st.checkbox('Canonical Smiles Plot')
 
-if plot:
-    sm = comp_dict['canonical_smiles']
-    mol = read_smiles(comp_dict['canonical_smiles'])
-    elements = nx.get_node_attributes(mol, name="element")
-    nx.draw(mol, with_labels=True, labels=elements, pos=nx.spring_layout(mol))
-    fig, ax = plt.subplots()
-    nx.draw(mol, with_labels=True, labels=elements, pos=nx.spring_layout(mol))
-    st.pyplot(fig)
+form = st.form(key="annotation")
 
-add = st.sidebar.checkbox('Add CID')
-if add:
-    cid_entry = st.sidebar.text_input('New CID')
-    confirm_input = st.sidebar.button('Confirm')
+with form:
+    cols = st.columns((1, 1))
+    author = cols[0].text_input("Report author:")
+    bug_type = cols[1].selectbox(
+        "Bug type:", ["Front-end", "Back-end", "Data related", "404"], index=2
+    )
+    comment = st.text_area("Comment:")
+    cols = st.columns(2)
+    date = cols[0].date_input("Bug date occurrence:")
+    bug_severity = cols[1].slider("Bug severity:", 1, 5, 2)
+    submitted = st.form_submit_button(label="Submit")
 
-    if confirm_input:
-        now = datetime.now()
-        opt = {'Compound CID': [cid_entry],
-               'Time_stamp': [now]}
-        opt_df = DataFrame(opt)
-        df = load_the_spreadsheet('Pending CID')
-        new_df = df.append(opt_df, ignore_index=True)
-        update_the_spreadsheet('Pending CID', new_df)
 
-'''
+if submitted:
+    add_row_to_gsheet(
+        gsheet_connector,
+        [[author, bug_type, comment, str(date), bug_severity]],
+    )
+    st.success("Thanks! Your bug was recorded.")
+    st.balloons()
+
+expander = st.expander("See all records")
+with expander:
+    st.write(f"Open original [Google Sheet]({GSHEET_URL})")
+    st.dataframe(get_data(gsheet_connector))
