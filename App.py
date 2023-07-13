@@ -1,5 +1,6 @@
 import streamlit as st
 import pandas as pd
+import gspread as gspread
 '''
 def load_data(file_path):
     return pd.read_excel(file_path)
@@ -9,8 +10,6 @@ def save_data(file_path, data):
 
 data = load_data('test_params_combos.xlsx')
 '''
-
-import gspread
 from oauth2client.service_account import ServiceAccountCredentials
 
 scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
