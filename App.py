@@ -2,28 +2,31 @@ import streamlit as st
 import pandas as pd
 '''
 def load_data(file_path):
-    return pd.read_csv(file_path)
-'''
+    return pd.read_excel(file_path)
+
 def save_data(file_path, data):
     data.to_excel(file_path, index=False)
 
-# data = load_data('data_sample.xlsx_text-davinci-003.csv')
+data = load_data('test_params_combos.xlsx')
+'''
+
+import gspread
+from oauth2client.service_account import ServiceAccountCredentials
+
+scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+
+creds = ServiceAccountCredentials.from_json_keyfile_name('thesis-392509-283588878017.json', scope)
+client = gspread.authorize(creds)
+
+sheet = client.open('data_sample').worksheet('Sheet1')
+# row = [name, adr, age, symptoms, gender, email]
+# sh.append_row(row)
+
 
 st.title("Text Summarization Analysis")
 
-# Read in data from the Google Sheet.
-# Uses st.cache_data to only rerun when the query changes or after 10 min.
-@st.cache_data(ttl=600)
-def load_data(sheets_url):
-    csv_url = sheets_url.replace("/edit#gid=", "/export?format=csv&gid=")
-    return pd.read_csv(csv_url)
 
-df = load_data(st.secrets["public_gsheets_url"])
 
-# Print results.
-for row in df.itertuples():
-    st.write("Hey")
-'''
 if 'selected_index' not in st.session_state:
     st.session_state['selected_index'] = 0
 
@@ -41,7 +44,7 @@ st.markdown(f"**Category**\n\n{selected_row['topic']}")
 
 st.markdown(f"**Original Text:**\n\n{selected_row['text']}")
 
-st.markdown(f"**Original Summary:**\n\n{selected_row['original_summary']}")
+st.markdown(f"**Original Summary:**\n\n{selected_row['summary']}")
 
 st.markdown(f"**Generated Summary:**\n\n{selected_row['generated_summary']}")
 
@@ -144,15 +147,24 @@ if st.button("Next"):
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
 
+    if st.button("Next"):
+        scores = [st.session_state[criterion] for criterion in criteria]
+        for i, criterion in enumerate(criteria):
+            # The next row index is (selected_index + 2) because Google Sheets indexes start from 1, not 0.
+            # For the column, you should find the column index of your criterion (you may need to update this)
+            sheet.update_cell(selected_index + 2, 82, scores[i])
+        # You should replace 'column_number' with the actual column number for 'Comment' and 'Category'
+        sheet.update_cell(selected_index + 2, 83, st.session_state['comment'])
+        sheet.update_cell(selected_index + 2, 84, st.session_state['category'])
 
-    save_data('test_params_combos.xlsx', data)
+        # Update the selected_index for the next iteration
+        st.session_state['selected_index'] = (selected_index + 1) % len(sheet)
 
-    st.session_state['selected_index'] = (selected_index + 1) % len(data)
+        # Reset the criteria scores, comment and category for the next iteration
+        for criterion in criteria:
+            st.session_state[criterion] = 0
+        st.session_state['comment'] = ''
+        st.session_state['category'] = categories[0]
 
-    for criterion in criteria:
-        st.session_state[criterion] = 0
-    st.session_state['comment'] = ''
-    st.session_state['category'] = categories[0]
-    st.experimental_rerun()
-
-'''
+        # This will rerun the script, effectively refreshing the page
+        st.experimental_rerun()
