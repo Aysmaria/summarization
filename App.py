@@ -15,16 +15,26 @@ data = load_data('test_params_combos.xlsx')
 spreadsheet_url = "https://docs.google.com/spreadsheets/d/1_n7IPbpOahJRsLDAkNdVSFROH7Puwb4n/edit?usp=sharing&ouid=117460474836199216753&rtpof=true&sd=true"
 
 # Create a connection using Shillelagh
-with connect(":memory:") as connection:
-    # Use SQL syntax to load data from the Google Sheet into a pandas DataFrame
-    query = f'SELECT * FROM "{spreadsheet_url}"'
-    data = pd.read_sql_query(query, connection)
+connection = connect(":memory:",
+                     adapter_kwargs = {
+                            "gsheetsapi": {
+                            "service_account_info":  st.secrets["gcp_service_account"]
+                                    }
+                                        }
+                        )
 
-# Use Streamlit to display the DataFrame
-st.dataframe(data)
 
-# row = [name, adr, age, symptoms, gender, email]
-# sh.append_row(row)
+def make_dataframe(executed_query):
+    import pandas as pd
+    df = pd.DataFrame(executed_query.fetchall())
+    df.columns = ["col1", "col2", "col3"]
+    return df
+
+
+with st.spinner(text="In progress..."):
+    sheet_url = st.secrets["private_gsheets_url"]
+    query = f'SELECT * FROM "{sheet_url}"'
+    df = make_dataframe(connection.execute(query))
 
 '''
 st.title("Text Summarization Analysis")
