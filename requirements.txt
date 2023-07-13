@@ -5,3 +5,5 @@ pandas
 transformers
 torch
 shillelagh
+google.oauth2 
+gsheetsdb
