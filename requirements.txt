@@ -6,3 +6,5 @@ transformers
 torch
 shillelagh
 gsheetsdb
+gspread_pandas
+google-auth
