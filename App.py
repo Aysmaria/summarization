@@ -1,6 +1,6 @@
 import streamlit as st
 import pandas as pd
-import gspread
+from shillelagh.backends.apsw.db import connect
 '''
 def load_data(file_path):
     return pd.read_excel(file_path)
@@ -10,18 +10,23 @@ def save_data(file_path, data):
 
 data = load_data('test_params_combos.xlsx')
 '''
-from oauth2client.service_account import ServiceAccountCredentials
 
-scope = ['https://spreadsheets.google.com/feeds', 'https://www.googleapis.com/auth/drive']
+# Define the URL of your Google Sheet (you need to make sure that it's publicly accessible)
+spreadsheet_url = "https://docs.google.com/spreadsheets/d/1_n7IPbpOahJRsLDAkNdVSFROH7Puwb4n/edit?usp=sharing&ouid=117460474836199216753&rtpof=true&sd=true"
 
-creds = ServiceAccountCredentials.from_json_keyfile_name('thesis-392509-283588878017.json', scope)
-client = gspread.authorize(creds)
+# Create a connection using Shillelagh
+with connect(":memory:") as connection:
+    # Use SQL syntax to load data from the Google Sheet into a pandas DataFrame
+    query = f'SELECT * FROM "{spreadsheet_url}"'
+    data = pd.read_sql_query(query, connection)
 
-sheet = client.open('data_sample').worksheet('Sheet1')
+# Use Streamlit to display the DataFrame
+st.dataframe(data)
+
 # row = [name, adr, age, symptoms, gender, email]
 # sh.append_row(row)
 
-
+'''
 st.title("Text Summarization Analysis")
 
 
@@ -162,3 +167,4 @@ if st.button("Next"):
 
     # This will rerun the script, effectively refreshing the page
     st.experimental_rerun()
+'''
