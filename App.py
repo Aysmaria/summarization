@@ -44,8 +44,7 @@ def get_data():
                                    'rouge1_scores_summary_generated_summary', 'rouge2_scores_text_generated_summary',
                                    'rouge2_scores_summary_generated_summary', 'rougeL_scores_text_generated_summary',
                                    'rougeL_scores_summary_generated_summary', 'model_name', 'Readability',
-                                   'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness', 'comment',
-                                   'category'])
+                                   'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness'])
 
         # df['new_column_name'] = None
         print(df)
