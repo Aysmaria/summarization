@@ -208,7 +208,7 @@ if st.button("Next"):
         # UPDATE DATA
         data.at[selected_index, criterion] = scores[i]
         # SAVE DATA AFTER EACH UPDATE
-        save_data('Test', data)
+        # save_data('Test', data)
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
 
