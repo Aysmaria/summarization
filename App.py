@@ -88,7 +88,7 @@ def save_data(file_path, data):
 
 # data = get_data('test_params_combos.xlsx')
 data = get_data()
-update_data = update_data()
+# update_data = update_data()
 st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
