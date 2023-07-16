@@ -4,27 +4,40 @@ from google.oauth2 import service_account
 import gspread
 from gspread_dataframe import set_with_dataframe
 
+# Ask for the user's name at the start of the session
+if 'user_id' not in st.session_state:
+    st.session_state['user_id'] = st.text_input('Please enter your name to begin')
 
+    # Prevent the rest of the app from running until the user_id is set
+    if st.session_state['user_id'] == '':
+        st.stop()
+
+    # Create a new spreadsheet for this user if it doesn't exist
+    try:
+        access_sheet(st.session_state['user_id'])
+    except gspread.SpreadsheetNotFound:
+        create_user_spreadsheet(st.session_state['user_id'], data)
+        
     # Read database on Google sheet
     ###############################
 @st.cache_resource
-@st.cache_resource
 def access_sheet(sheet_name):
     '''
-    Access the Google's spreadsheet.
+    Access or create a Google Sheets document.
     '''
     scope = ['https://spreadsheets.google.com/feeds',
              'https://www.googleapis.com/auth/drive']
     credentials = service_account.Credentials.from_service_account_info(
                 st.secrets["gcp_service_account"], scopes = scope)
     gc = gspread.authorize(credentials)
+
+    # Attempt to open an existing sheet, if it doesn't exist, create a new one
     try:
         sheet = gc.open(sheet_name)
     except gspread.SpreadsheetNotFound:
         sheet = gc.create(sheet_name)
-        # If you want to share the spreadsheet with a specific email uncomment the line below
-        # sheet.share('example@email.com', perm_type='user', role='writer')
-    print("Opened file")
+
+    print("Accessed file:", sheet_name)
     return sheet
 
 
@@ -51,29 +64,36 @@ def get_data():
 '''
 
 
-def get_data():
+def get_data(sheet_name):
     '''
-    Read the data from the Google sheet
-    Returns
-    -------
-    df : Pandas dataframe
+    Read the data from the first worksheet of a Google Sheets document.
     '''
-    sheet = access_sheet('Test')
+    sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
     data = sheet.get_all_values()
-    header = data[0]  # This will select the second row as your column names.
-    values = data[1:]  # This will select everything from the third row onwards as your data.
+    header = data[0]  # This will select the first row as your column names.
+    values = data[1:]  # This will select everything from the second row onwards as your data.
     df = pd.DataFrame(values, columns=header)
-
     print(df.columns)
     return df
 
 
 def save_data(sheet_name, data):
     '''
-    Save the data to a Google sheet.
+    Save the data to the first worksheet of a Google Sheets document.
     '''
-    sheet = access_sheet(sheet_name)
+    sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
     set_with_dataframe(sheet, data)
+
+
+def create_user_spreadsheet(user_name, data):
+    # Create a new spreadsheet for this user
+    user_sheet = access_sheet(user_name)
+
+    # Populate the new spreadsheet with the original data
+    set_with_dataframe(user_sheet, data)
+
+    print(f"Created and populated spreadsheet for user: {user_name}")
+
 
 '''
 def load_data(file_path):
@@ -87,12 +107,7 @@ def save_data(file_path, data):
 # data = get_data('test_params_combos.xlsx')
 data = get_data()
 
-# Ask for the user's name at the start of the session
-if 'user_id' not in st.session_state:
-    st.session_state['user_id'] = st.text_input('Please enter your name to begin')
-    # Prevent the rest of the app from running until the user_id is set
-    if st.session_state['user_id'] == '':
-        st.stop()
+
 
 
 st.title("Text Summarization Analysis")
@@ -212,16 +227,15 @@ if st.button("Next"):
     for i, criterion in enumerate(criteria):
         # UPDATE DATA
         data.at[selected_index, criterion] = scores[i]
-        # SAVE DATA AFTER EACH UPDATE
-        # save_data('Test', data)
+
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
 
     # Add user_id to the row in the DataFrame
     data.at[selected_index, 'User'] = st.session_state['user_id']
-    # save_data('Test', data)  # 'Test' should be the name of your Google Spreadsheet.
-    save_data(st.session_state['user_id'], data)
 
+    # Save this row of data to the user's own spreadsheet
+    save_data(st.session_state['user_id'], data)
 
     st.session_state['selected_index'] = (selected_index + 1) % len(data)
 
