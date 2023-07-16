@@ -37,7 +37,15 @@ def get_data():
         '''
         sheet = access_sheet('Test')
         data = sheet.get_all_values()
-        df = pd.DataFrame(data[1:], columns=['text', 'original_summary', 'topic', 'title', 'dataset_name',	'generated_summary','params', 'bert_score_text_generated_summary', 'bert_score_summary_generated_summary', 'rouge1_scores_text_generated_summary',	'rouge1_scores_summary_generated_summary',	'rouge2_scores_text_generated_summary',	'rouge2_scores_summary_generated_summary',	'rougeL_scores_text_generated_summary',	'rougeL_scores_summary_generated_summary',	'model_name'])
+        df = pd.DataFrame(data[1:],
+                          columns=['text', 'original_summary', 'topic', 'title', 'dataset_name', 'generated_summary',
+                                   'params', 'bert_score_text_generated_summary',
+                                   'bert_score_summary_generated_summary', 'rouge1_scores_text_generated_summary',
+                                   'rouge1_scores_summary_generated_summary', 'rouge2_scores_text_generated_summary',
+                                   'rouge2_scores_summary_generated_summary', 'rougeL_scores_text_generated_summary',
+                                   'rougeL_scores_summary_generated_summary', 'model_name', 'Readability',
+                                   'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness', 'comment',
+                                   'category'])
 
         # df['new_column_name'] = None
         print(df)
