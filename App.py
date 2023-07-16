@@ -54,8 +54,8 @@ def get_data():
     '''
     sheet = access_sheet('Test')
     data = sheet.get_all_values()
-    header = data[1]  # This will select the second row as your column names.
-    values = data[2:]  # This will select everything from the third row onwards as your data.
+    header = data[0]  # This will select the second row as your column names.
+    values = data[1:]  # This will select everything from the third row onwards as your data.
     df = pd.DataFrame(values, columns=header)
 
     print(df)
