@@ -72,14 +72,18 @@ def save_data(sheet_name, data):
     set_with_dataframe(sheet, data)
 
 
-def create_user_spreadsheet(user_name, data):
+def create_user_spreadsheet(user_name):
     # Create a new spreadsheet for this user
     user_sheet = access_sheet(user_name)
 
-    # Populate the new spreadsheet with the original data
-    set_with_dataframe(user_sheet, data)
+    # Load the data from the master spreadsheet
+    master_data = get_data("Test")  # replace "master_spreadsheet_name" with the name of your master spreadsheet
+
+    # Populate the new spreadsheet with the data from the master spreadsheet
+    set_with_dataframe(user_sheet.sheet1, master_data)
 
     print(f"Created and populated spreadsheet for user: {user_name}")
+
 
 
 '''
@@ -90,6 +94,7 @@ def load_data(file_path):
 def save_data(file_path, data):
     data.to_excel(file_path, index=False)
 '''
+# Ask for the user's name at the start of the session
 # Ask for the user's name at the start of the session
 if 'user_id' not in st.session_state:
     st.session_state['user_id'] = st.text_input('Please enter your name to begin')
@@ -102,11 +107,9 @@ if 'user_id' not in st.session_state:
     try:
         access_sheet(st.session_state['user_id'])
     except gspread.SpreadsheetNotFound:
-        # You should pass some initial data here, currently it's not defined
-        # It should be a DataFrame that matches the structure of your Google Sheets data
-        # For example:
-        data = get_data('Test')  # replace 'master_spreadsheet' with the name of your master spreadsheet
-        create_user_spreadsheet(st.session_state['user_id'], data)
+        # Create and populate the user's spreadsheet with data from the master spreadsheet
+        create_user_spreadsheet(st.session_state['user_id'])
+
 
 
 # Load the data from the user's spreadsheet
