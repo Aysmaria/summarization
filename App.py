@@ -25,13 +25,8 @@ def access_sheet(sheet_name):
 '''
 @st.cache_data
 def get_data():
-        '''
-        Read the biographical information from the Google sheet
-        Returns
-        -------
-        df : Pandas dataframe
-            Contains columns 'section', 'content', 'embeddings' & 'num_tokens'
-        '''
+        
+        
         sheet = access_sheet('Test')
         data = sheet.get_all_values()
         df = pd.DataFrame(data[1:],
