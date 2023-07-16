@@ -105,8 +105,9 @@ if 'user_id' not in st.session_state:
         # You should pass some initial data here, currently it's not defined
         # It should be a DataFrame that matches the structure of your Google Sheets data
         # For example:
-        # data = pd.DataFrame(columns=['Name', 'Age', 'Occupation'])
+        data = get_data('Test')  # replace 'master_spreadsheet' with the name of your master spreadsheet
         create_user_spreadsheet(st.session_state['user_id'], data)
+
 
 # Load the data from the user's spreadsheet
 data = get_data(st.session_state['user_id'])
