@@ -8,19 +8,25 @@ from gspread_dataframe import set_with_dataframe
     # Read database on Google sheet
     ###############################
 @st.cache_resource
+@st.cache_resource
 def access_sheet(sheet_name):
-        '''
-        Access the Google's spreadsheet.
-        '''
-        # From local computer
-        scope = ['https://spreadsheets.google.com/feeds',
-                 'https://www.googleapis.com/auth/drive']
-        credentials = service_account.Credentials.from_service_account_info(
-                    st.secrets["gcp_service_account"], scopes = scope)
-        gc = gspread.authorize(credentials)
-        sheet = gc.open('test_data_sample.xlsx_gpt-3').worksheet(sheet_name)
-        print("Opened file")
-        return sheet
+    '''
+    Access the Google's spreadsheet.
+    '''
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    credentials = service_account.Credentials.from_service_account_info(
+                st.secrets["gcp_service_account"], scopes = scope)
+    gc = gspread.authorize(credentials)
+    try:
+        sheet = gc.open(sheet_name)
+    except gspread.SpreadsheetNotFound:
+        sheet = gc.create(sheet_name)
+        # If you want to share the spreadsheet with a specific email uncomment the line below
+        # sheet.share('example@email.com', perm_type='user', role='writer')
+    print("Opened file")
+    return sheet
+
 
 '''
 @st.cache_data
@@ -213,7 +219,8 @@ if st.button("Next"):
 
     # Add user_id to the row in the DataFrame
     data.at[selected_index, 'User'] = st.session_state['user_id']
-    save_data('Test', data)  # 'Test' should be the name of your Google Spreadsheet.
+    # save_data('Test', data)  # 'Test' should be the name of your Google Spreadsheet.
+    save_data(st.session_state['user_id'], data)
 
 
     st.session_state['selected_index'] = (selected_index + 1) % len(data)
