@@ -9,18 +9,24 @@ from gspread_dataframe import set_with_dataframe
     ###############################
 @st.cache_resource
 def access_sheet(sheet_name):
-        '''
-        Access the Google's spreadsheet.
-        '''
-        # From local computer
-        scope = ['https://spreadsheets.google.com/feeds',
-                 'https://www.googleapis.com/auth/drive']
-        credentials = service_account.Credentials.from_service_account_info(
-                    st.secrets["gcp_service_account"], scopes = scope)
-        gc = gspread.authorize(credentials)
-        sheet = gc.open('test_data_sample.xlsx_gpt-3').worksheet(sheet_name)
-        print("Opened file")
-        return sheet
+    '''
+    Access the Google's spreadsheet.
+    '''
+    # From local computer
+    scope = ['https://spreadsheets.google.com/feeds',
+             'https://www.googleapis.com/auth/drive']
+    credentials = service_account.Credentials.from_service_account_info(
+                st.secrets["gcp_service_account"], scopes = scope)
+    gc = gspread.authorize(credentials)
+    try:
+        # Try to open the sheet
+        sheet = gc.open(sheet_name)
+    except gspread.SpreadsheetNotFound:
+        # If the sheet doesn't exist, create it
+        sh = gc.create(sheet_name)
+        sheet = gc.open(sheet_name)
+    return sheet.sheet1  # Access the first worksheet in the spreadsheet
+
 
 '''
 @st.cache_data
@@ -208,8 +214,13 @@ if st.button("Next"):
         data.at[selected_index, criterion] = scores[i]
         # SAVE DATA AFTER EACH UPDATE
         # save_data('Test', data)
+    # Update the data
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
+    data.at[selected_index, 'User'] = st.session_state['user_id']
+
+    # Save the data to the sheet named after the user
+    save_data(st.session_state['user_id'], data)
 
     # Add user_id to the row in the DataFrame
     data.at[selected_index, 'User'] = st.session_state['user_id']
