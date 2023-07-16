@@ -81,6 +81,14 @@ def save_data(file_path, data):
 # data = get_data('test_params_combos.xlsx')
 data = get_data()
 
+# Ask for the user's name at the start of the session
+if 'user_id' not in st.session_state:
+    st.session_state['user_id'] = st.text_input('Please enter your name to begin')
+    # Prevent the rest of the app from running until the user_id is set
+    if st.session_state['user_id'] == '':
+        st.stop()
+
+
 st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
@@ -203,6 +211,8 @@ if st.button("Next"):
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
 
+    # Add user_id to the row in the DataFrame
+    data.at[selected_index, 'User'] = st.session_state['user_id']
     save_data('Test', data)  # 'Test' should be the name of your Google Spreadsheet.
 
 
