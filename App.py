@@ -1,14 +1,8 @@
-import os
 import streamlit as st
 import pandas as pd
 from google.oauth2 import service_account
 import gspread
 from gspread_dataframe import set_with_dataframe
-import openai
-import numpy as np
-from transformers import GPT2TokenizerFast
-# from sentence_transformers import SentenceTransformer
-import datetime
 
 
 
