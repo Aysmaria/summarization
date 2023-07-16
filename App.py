@@ -22,7 +22,7 @@ def access_sheet(sheet_name):
         print("Opened file")
         return sheet
 
-
+'''
 @st.cache_data
 def get_data():
         '''
@@ -47,7 +47,24 @@ def get_data():
         print(df)
         # set_with_dataframe(sheet, df)
         return df
+'''
 
+
+def get_data():
+    '''
+    Read the data from the Google sheet
+    Returns
+    -------
+    df : Pandas dataframe
+    '''
+    sheet = access_sheet('Test')
+    data = sheet.get_all_values()
+    header = data[1]  # This will select the second row as your column names.
+    values = data[2:]  # This will select everything from the third row onwards as your data.
+    df = pd.DataFrame(values, columns=header)
+
+    print(df)
+    return df
 
 
 def save_data(sheet_name, data):
