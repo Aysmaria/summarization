@@ -4,20 +4,7 @@ from google.oauth2 import service_account
 import gspread
 from gspread_dataframe import set_with_dataframe
 
-# Ask for the user's name at the start of the session
-if 'user_id' not in st.session_state:
-    st.session_state['user_id'] = st.text_input('Please enter your name to begin')
 
-    # Prevent the rest of the app from running until the user_id is set
-    if st.session_state['user_id'] == '':
-        st.stop()
-
-    # Create a new spreadsheet for this user if it doesn't exist
-    try:
-        access_sheet(st.session_state['user_id'])
-    except gspread.SpreadsheetNotFound:
-        create_user_spreadsheet(st.session_state['user_id'], data)
-        
     # Read database on Google sheet
     ###############################
 @st.cache_resource
@@ -103,11 +90,26 @@ def load_data(file_path):
 def save_data(file_path, data):
     data.to_excel(file_path, index=False)
 '''
+# Ask for the user's name at the start of the session
+if 'user_id' not in st.session_state:
+    st.session_state['user_id'] = st.text_input('Please enter your name to begin')
 
-# data = get_data('test_params_combos.xlsx')
-data = get_data()
+    # Prevent the rest of the app from running until the user_id is set
+    if st.session_state['user_id'] == '':
+        st.stop()
 
+    # Create a new spreadsheet for this user if it doesn't exist
+    try:
+        access_sheet(st.session_state['user_id'])
+    except gspread.SpreadsheetNotFound:
+        # You should pass some initial data here, currently it's not defined
+        # It should be a DataFrame that matches the structure of your Google Sheets data
+        # For example:
+        # data = pd.DataFrame(columns=['Name', 'Age', 'Occupation'])
+        create_user_spreadsheet(st.session_state['user_id'], data)
 
+# Load the data from the user's spreadsheet
+data = get_data(st.session_state['user_id'])
 
 
 st.title("Text Summarization Analysis")
