@@ -5,12 +5,9 @@ import gspread
 from gspread_dataframe import set_with_dataframe
 
 
-
-# This should be under `if check_password():`
-
     # Read database on Google sheet
     ###############################
-# @st.cache_resource
+@st.cache_resource
 def access_sheet(sheet_name):
         '''
         Access the Google's spreadsheet.
@@ -26,7 +23,7 @@ def access_sheet(sheet_name):
         return sheet
 
 
-# @st.cache_data
+@st.cache_data
 def get_data():
         '''
         Read the biographical information from the Google sheet
@@ -52,23 +49,6 @@ def get_data():
         return df
 
 
-# @st.cache_data
-def update_data():
-        '''
-        Read the biographical information from the Google sheet
-        Returns
-        -------
-        df : Pandas dataframe
-            Contains columns 'section', 'content', 'embeddings' & 'num_tokens'
-        '''
-        sheet = access_sheet('Test')
-        data = sheet.get_all_values()
-        df = pd.DataFrame(data[1:], columns=['text', 'original_summary', 'topic', 'title', 'dataset_name',	'generated_summary','params', 'bert_score_text_generated_summary', 'bert_score_summary_generated_summary', 'rouge1_scores_text_generated_summary',	'rouge1_scores_summary_generated_summary',	'rouge2_scores_text_generated_summary',	'rouge2_scores_summary_generated_summary',	'rougeL_scores_text_generated_summary',	'rougeL_scores_summary_generated_summary',	'model_name', 'Readability', 'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness', 'comment', 'category'])
-
-        # df['new_column_name'] = None
-        print(df)
-        # set_with_dataframe(sheet, df)
-        return df
 
 def save_data(sheet_name, data):
     '''
@@ -88,7 +68,7 @@ def save_data(file_path, data):
 
 # data = get_data('test_params_combos.xlsx')
 data = get_data()
-# update_data = update_data()
+
 st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
