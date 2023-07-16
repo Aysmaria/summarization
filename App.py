@@ -58,7 +58,7 @@ def get_data():
     values = data[1:]  # This will select everything from the third row onwards as your data.
     df = pd.DataFrame(values, columns=header)
 
-    print(df)
+    print(df.columns)
     return df
 
 
