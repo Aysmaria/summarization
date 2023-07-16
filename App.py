@@ -44,6 +44,25 @@ def get_data():
         # set_with_dataframe(sheet, df)
         return df
 
+
+# @st.cache_data
+def update_data():
+        '''
+        Read the biographical information from the Google sheet
+        Returns
+        -------
+        df : Pandas dataframe
+            Contains columns 'section', 'content', 'embeddings' & 'num_tokens'
+        '''
+        sheet = access_sheet('Test')
+        data = sheet.get_all_values()
+        df = pd.DataFrame(data[1:], columns=['text', 'original_summary', 'topic', 'title', 'dataset_name',	'generated_summary','params', 'bert_score_text_generated_summary', 'bert_score_summary_generated_summary', 'rouge1_scores_text_generated_summary',	'rouge1_scores_summary_generated_summary',	'rouge2_scores_text_generated_summary',	'rouge2_scores_summary_generated_summary',	'rougeL_scores_text_generated_summary',	'rougeL_scores_summary_generated_summary',	'model_name', 'Readability', 'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness', 'comment', 'category'])
+
+        # df['new_column_name'] = None
+        print(df)
+        # set_with_dataframe(sheet, df)
+        return df
+
 def save_data(sheet_name, data):
     '''
     Save the data to a Google sheet.
@@ -62,6 +81,7 @@ def save_data(file_path, data):
 
 # data = get_data('test_params_combos.xlsx')
 data = get_data()
+update_data = update_data()
 st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
@@ -182,7 +202,7 @@ if st.button("Next"):
     data.at[selected_index, 'Comment'] = st.session_state['comment']
     data.at[selected_index, 'Category'] = st.session_state['category']
 
-    save_data('Test', data)  # 'Test' should be the name of your Google Spreadsheet.
+    save_data('Test', update_data)  # 'Test' should be the name of your Google Spreadsheet.
 
 
     st.session_state['selected_index'] = (selected_index + 1) % len(data)
