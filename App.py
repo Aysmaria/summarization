@@ -212,11 +212,14 @@ else:
         user_data.at[selected_index, 'Comment'] = st.session_state['comment']
         user_data.at[selected_index, 'Category'] = st.session_state['category']
 
-        # Add user_id to the row in the DataFrame
-        user_data.at[selected_index, 'User'] = st.session_state['user_id']
+        # Add user_name to the row in the DataFrame
+        if 'User' not in user_data.columns:
+            user_data['User'] = ''
+
+        user_data.at[selected_index, 'User'] = st.session_state['user_name']
 
         # Save this row of data to the user's own spreadsheet
-        save_data(st.session_state['user_id'], user_data)
+        save_data(st.session_state['user_name'], user_data)
 
         st.session_state['selected_index'] = (selected_index + 1) % len(user_data)
 
