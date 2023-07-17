@@ -52,11 +52,7 @@ def get_data(sheet_name, worksheet_name):
 
 # data = get_data("test_data_sample.xlsx_gpt-3", "ü")
 # print(data)
-'''
-def save_data(sheet_name, data):
-    sheet = access_sheet(sheet_name) # Access the first worksheet
-    set_with_dataframe(sheet, data)
-'''
+
 
 def save_data(sheet_name, worksheet_name, data):
     # Access the Google Sheets document
@@ -110,6 +106,13 @@ def create_user_worksheet(user_name):
 # create_user_worksheet("Marusya4")
 
     ### INITIATE STREAMLIT
+
+st.title("Text Summarization Analysis")
+st.write("""
+    In the context of my master's thesis on the topic of "Automatic Text Summarization in German", I need help with evaluation. 
+    The steps to be performed are quite simple. There is an original text, an original summary, and several variants of text summaries. 
+    Your task is first to provide your nickname, and then to evaluate the summaries based on the criteria provided on the right.
+    """)
 st.write("Please provide your name:")
 
 user_name = st.text_input('Enter your name')  # Creates a text input box
@@ -127,15 +130,15 @@ if user_name:
     if 'user_data' in st.session_state and not st.session_state['all_processed']:
         user_data = st.session_state['user_data']
         print(len(user_data))
-            ###### START ANALYSIS
-        st.title("Text Summarization Analysis")
+        ###### START ANALYSIS
+
 
         selected_index = st.session_state['selected_index']
 
-            # Check if all texts have been processed
+        # Check if all texts have been processed
 
         if selected_index >= len(user_data)-1:
-            st.write("All texts have been processed. Thank you.")
+            st.write("All texts have been processed :)  Thank you for participation 🩷")
             st.balloons()  # Streamlit balloons
             st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
             st.stop()
