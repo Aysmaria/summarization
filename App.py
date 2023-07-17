@@ -91,18 +91,21 @@ st.write("Please provide your name:")
 
 user_name = st.text_input('Enter your name')  # Creates a text input box
 
-if user_name:
+iif user_name:
     st.write(f"Welcome, {user_name}. Creating your worksheet...")
-    # create_user_worksheet(user_name)
 
     if 'user_name' not in st.session_state:
         st.session_state['user_name'] = user_name
-        # print(st.session_state['user_name'])
 
     if st.button('Start'):
-            # Load user data
-        user_data = create_user_worksheet(user_name)
-        st.dataframe(user_data)
+        # Check if user_data has already been loaded into session state
+        if 'user_data' not in st.session_state:
+            # If not, create the worksheet and load the data into session state
+            user_data = create_user_worksheet(user_name)
+            st.session_state['user_data'] = user_data
+        else:
+            # If it has, just get the data from session state
+            user_data = st.session_state['user_data']
 
 
         ###### START ANALYSIS
