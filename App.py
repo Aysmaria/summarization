@@ -238,10 +238,15 @@ if user_name:
                 # Save this row of data to the user's own spreadsheet
                 save_data(st.session_state['user_name'], user_data)
 
-                st.session_state['selected_index'] = (selected_index + 1) % len(user_data)
+                # Update the selected_index in the session_state
+                st.session_state['selected_index'] = (st.session_state['selected_index'] + 1) % len(user_data)
 
+                # Reset the scores, comment, and category in the session_state
                 for criterion in criteria:
                     st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
+
+                # Rerun the app to show the next text
                 st.experimental_rerun()
+
