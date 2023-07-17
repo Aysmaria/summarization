@@ -97,7 +97,7 @@ if user_name:
 else:
     st.write("Waiting for user name...")
 
-print(st.write(user_data))
+print(user_data)
 '''
 # Ask for the user's name at the start of the session
 if 'user_name' not in st.session_state:
