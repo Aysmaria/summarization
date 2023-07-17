@@ -216,22 +216,19 @@ if user_name:
         if st.button("Show Additional Information"):
                 info_columns = [
                     "title",
-                    "dataset",
+                    "dataset_name",
                     "params",
-                    "model",
-                    "temperature",
-                    "max_tokens",
+                    "model_name",
                     "topic",
-                    "url",
-                    "date",
-                    "rouge1_text_to_generated",
-                    "rouge2_text_to_generated",
+                    "rouge1_scores_text_generated_summary",
+                    "rouge1_scores_summary_generated_summary",
+                    "rouge2_scores_text_generated_summary",
+                    "rouge2_scores_summary_generated_summary",
                     "rougeL_text_to_generated",
-                    "rouge1_summary_to_generated",
-                    "rouge2_summary_to_generated",
-                    "rougeL_summary_to_generated",
-                    "bert_text_to_generated",
-                    "bert_summary_to_generated"]
+                    "rrougeL_scores_text_generated_summary",
+                    "rougeL_scores_summary_generated_summary",
+                    "bert_score_text_generated_summary",
+                    "bert_score_summary_generated_summary"]
 
                 for column in info_columns:
                     if column in selected_row:
