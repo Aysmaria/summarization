@@ -251,11 +251,13 @@ if user_name:
             # Save the updated data to the worksheet
             save_data("test_data_sample.xlsx_gpt-3", st.session_state['user_name'], user_data)
 
+            if 'selected_index' not in st.session_state:
+                st.session_state['selected_index'] = 0  # or any other default value
 
-            # Update the selected_index in the session_state
+            # Now it's safe to use st.session_state['selected_index'].
             st.session_state['selected_index'] = (st.session_state['selected_index'] + 1) % len(user_data)
 
-                # Reset the scores, comment, and category in the session_state
+            # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
                 st.session_state[criterion] = 0
             st.session_state['comment'] = ''
