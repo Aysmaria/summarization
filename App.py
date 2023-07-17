@@ -88,10 +88,10 @@ else:
     # Load the data from the user's spreadsheet
     user_data = get_data(st.session_state['user_name'])
     # Display the data to the user
-    st.write(user_data)
+st.write(user_data)
 
 
-    st.title("Text Summarization Analysis")
+st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
         st.session_state['selected_index'] = 0
