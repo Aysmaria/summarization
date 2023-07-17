@@ -86,7 +86,7 @@ else:
     create_user_worksheet(st.session_state['user_name'])
 
     # Load the data from the user's spreadsheet
-    user_data = get_data(st.session_state['user_name'])
+user_data = get_data(st.session_state['user_name'])
     # Display the data to the user
 st.write(user_data)
 
