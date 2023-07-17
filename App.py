@@ -73,28 +73,25 @@ def create_user_worksheet(user_name):
 # create_user_worksheet("M")
 
 # Ask for the user's name at the start of the session
-user_name = st.text_input('Please enter your name to begin')
-
-if user_name:  # Proceed only if user_name is not empty
-    if 'user_name' not in st.session_state or st.session_state['user_name'] != user_name:
-        # Update the session state with the new name
+if 'user_name' not in st.session_state or st.session_state['user_name'] == "":
+    user_name = st.text_input('Please enter your name to begin')
+    if user_name:
         st.session_state['user_name'] = user_name
+else:
+    # Try to access the spreadsheet for this user
+    try:
+        spreadsheet = access_sheet(st.session_state['user_name'])
+    except gspread.SpreadsheetNotFound:
+        # If the spreadsheet doesn't exist, create a new one
+        create_user_worksheet(st.session_state['user_name'])
+        # Then try to access the newly created spreadsheet again
+        spreadsheet = access_sheet(st.session_state['user_name'])
 
-        # Try to access the spreadsheet for this user
-        try:
-            spreadsheet = access_sheet(st.session_state['user_name'])
-        except gspread.SpreadsheetNotFound:
-            # If the spreadsheet doesn't exist, create a new one
-            create_user_worksheet(st.session_state['user_name'])
-            # Then try to access the newly created spreadsheet again
-            spreadsheet = access_sheet(st.session_state['user_name'])
+    # Load the data from the user's spreadsheet
+    user_data = get_data(st.session_state['user_name'])
 
-        # Load the data from the user's spreadsheet
-        user_data = get_data(st.session_state['user_name'])
-
-        # Display the data to the user
-        st.write(user_data)
-
+    # Display the data to the user
+    st.write(user_data)
 
 
 '''
