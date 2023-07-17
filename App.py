@@ -92,7 +92,7 @@ if user_name:
     if st.button('Start'):
             # Load user data
         user_data = get_data(user_name)
-        print(st.write(user_data))
+        st.write(user_data)
 
 else:
     st.write("Waiting for user name...")
