@@ -221,32 +221,27 @@ if user_name:
                         st.write(f"{column}: {selected_row[column]}")
 
         if st.button("Next"):
-                scores = [st.session_state[criterion] for criterion in criteria]
-                for i, criterion in enumerate(criteria):
-                    # UPDATE DATA
-                    user_data.at[selected_index, criterion] = scores[i]
+            scores = [st.session_state[criterion] for criterion in criteria]
+            for i, criterion in enumerate(criteria):
+                # UPDATE DATA
+                user_data.at[selected_index, criterion] = scores[i]
 
-                user_data.at[selected_index, 'Comment'] = st.session_state['comment']
-                user_data.at[selected_index, 'Category'] = st.session_state['category']
+            user_data.at[selected_index, 'Comment'] = st.session_state['comment']
+            user_data.at[selected_index, 'Category'] = st.session_state['category']
 
-                # Add user_name to the row in the DataFrame
-                if 'User' not in user_data.columns:
-                    user_data['User'] = ''
+            # Save the updated data to the worksheet
+            save_data("test_data_sample.xlsx_gpt-3", st.session_state['user_name'], user_data)
 
-                user_data.at[selected_index, 'User'] = st.session_state['user_name']
 
-                # Save this row of data to the user's own spreadsheet
-                save_data(st.session_state['user_name'], user_data)
-
-                # Update the selected_index in the session_state
-                st.session_state['selected_index'] = (st.session_state['selected_index'] + 1) % len(user_data)
+            # Update the selected_index in the session_state
+            st.session_state['selected_index'] = (st.session_state['selected_index'] + 1) % len(user_data)
 
                 # Reset the scores, comment, and category in the session_state
-                for criterion in criteria:
-                    st.session_state[criterion] = 0
-                st.session_state['comment'] = ''
-                st.session_state['category'] = categories[0]
+            for criterion in criteria:
+                st.session_state[criterion] = 0
+            st.session_state['comment'] = ''
+            st.session_state['category'] = categories[0]
 
                 # Rerun the app to show the next text
-                st.experimental_rerun()
+            st.experimental_rerun()
 
