@@ -76,14 +76,15 @@ def create_user_worksheet(user_name):
 if 'user_name' not in st.session_state:
     st.session_state['user_name'] = st.text_input('Please enter your name to begin')
 else:
-    # Create a new spreadsheet for this user if it doesn't exist
-    access_sheet(st.session_state['user_name'])
-        # Create and populate the user's spreadsheet with data from the master spreadsheet
-    create_user_worksheet(st.session_state['user_name'])
+    # Access the master spreadsheet
+    spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
 
-    # Load the data from the user's spreadsheet
+    # Create and populate the user's worksheet with data from the master spreadsheet
+    create_user_worksheet(spreadsheet, st.session_state['user_name'])
+
+    # Load the data from the user's worksheet
     user_data = get_data(st.session_state['user_name'])
-    print(user_data)
+
     # Display the data to the user
     st.write(user_data)
 
