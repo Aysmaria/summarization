@@ -89,14 +89,14 @@ user_name = st.text_input('')  # Creates a text input box
 
 if user_name:
     st.write(f"Welcome, {user_name}. Creating your worksheet...")
-    create_user_worksheet(user_name)
+    # create_user_worksheet(user_name)
 
     if 'user_name' not in st.session_state:
         st.session_state['user_name'] = user_name
 
     if st.button('Start'):
             # Load user data
-        user_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
+        user_data = create_user_worksheet(user_name)
         st.write(user_data)
 
 else:
