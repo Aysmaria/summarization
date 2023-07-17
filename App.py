@@ -96,16 +96,12 @@ if user_name:
 
     if 'user_name' not in st.session_state:
         st.session_state['user_name'] = user_name
+        # Load the user_data when the user_name is first submitted
+        st.session_state['user_data'] = create_user_worksheet(user_name)
+        st.session_state['all_processed'] = False  # Variable to track if all texts have been processed
 
-    if st.button('Start'):
-        # Check if user_data has already been loaded into session state
-        if 'user_data' not in st.session_state:
-            # If not, create the worksheet and load the data into session state
-            user_data = create_user_worksheet(user_name)
-            st.session_state['user_data'] = user_data
-        else:
-            # If it has, just get the data from session state
-            user_data = st.session_state['user_data']
+    if 'user_data' in st.session_state and not st.session_state['all_processed']:
+        user_data = st.session_state['user_data']
 
 
         ###### START ANALYSIS
@@ -120,6 +116,7 @@ if user_name:
 
         if selected_index >= len(user_data):
             st.write("All texts have been processed. Algorithm finished.")
+            st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
             st.stop()
 
         st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
