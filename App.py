@@ -53,7 +53,6 @@ def save_data(sheet_name, data):
 
 # save_data("test_data_sample.xlsx_gpt-3", data)
 
-@st.cache_resource
 def create_user_worksheet(user_name):
     # Access the spreadsheet
     spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
