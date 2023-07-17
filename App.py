@@ -83,7 +83,7 @@ def create_user_spreadsheet(user_name):
 
     # Load the data from the master spreadsheet
     master_data = get_data("Test")  # replace "master_spreadsheet_name" with the name of your master spreadsheet
-
+    print(master_data)
     # Populate the new spreadsheet with the data from the master spreadsheet
     set_with_dataframe(user_sheet.sheet1, master_data)
 
