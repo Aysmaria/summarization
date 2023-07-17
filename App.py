@@ -91,7 +91,7 @@ st.write("Please provide your name:")
 
 user_name = st.text_input('Enter your name')  # Creates a text input box
 
-iif user_name:
+if user_name:
     st.write(f"Welcome, {user_name}. Creating your worksheet...")
 
     if 'user_name' not in st.session_state:
