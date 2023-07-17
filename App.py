@@ -71,12 +71,13 @@ def create_user_worksheet(user_name):
         user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
 
         # Load the data from the master spreadsheet
-        master_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
+        master_data = get_data("test_data_sample.xlsx_gpt-3", "masterworksheet")  # assuming "Master" is your master worksheet name
 
         # Populate the new worksheet with the data from the master spreadsheet
         set_with_dataframe(user_sheet, master_data)
 
         print(f"Created and populated worksheet for user: {user_name}")
+
 
 
 # create_user_worksheet("M")
@@ -85,7 +86,7 @@ def create_user_worksheet(user_name):
 st.title("Text Summarization Analysis")
 st.write("Please provide your name:")
 
-user_name = st.text_input('')  # Creates a text input box
+user_name = st.text_input('Enter your name')  # Creates a text input box
 
 if user_name:
     st.write(f"Welcome, {user_name}. Creating your worksheet...")
@@ -97,7 +98,7 @@ if user_name:
     if st.button('Start'):
             # Load user data
         user_data = create_user_worksheet(user_name)
-        st.write(user_data)
+        st.dataframe(user_data)
 
 else:
     st.write("Waiting for user name...")
