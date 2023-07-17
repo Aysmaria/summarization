@@ -103,38 +103,35 @@ def create_user_worksheet(user_name):
 
 # create_user_worksheet("Marusya4")
 
-### INITIATE STREAMLIT
-st.write("Please provide your name:")
+    ### INITIATE STREAMLIT
+    st.write("Please provide your name:")
 
-user_name = st.text_input('Enter your name')  # Creates a text input box
+    user_name = st.text_input('Enter your name')  # Creates a text input box
 
-if user_name:
-    st.write(f"Welcome, {user_name}. Creating your worksheet...")
+    if user_name:
+        # Check if the 'user_name' key exists in the session state
+        if 'user_name' not in st.session_state or st.session_state['user_name'] != user_name:
+            st.session_state['user_name'] = user_name
+            # Load the user_data when the user_name is first submitted
+            st.session_state['user_data'] = create_user_worksheet(user_name)
+            st.session_state['all_processed'] = False  # Variable to track if all texts have been processed
+            # When the user name changes or the app restarts, start from the beginning
+            st.session_state['selected_index'] = 0
 
-    if 'user_name' not in st.session_state:
-        st.session_state['user_name'] = user_name
-        # Load the user_data when the user_name is first submitted
-        st.session_state['user_data'] = create_user_worksheet(user_name)
-        st.session_state['all_processed'] = False  # Variable to track if all texts have been processed
+        if 'user_data' in st.session_state and not st.session_state['all_processed']:
+            user_data = st.session_state['user_data']
 
-    if 'user_data' in st.session_state and not st.session_state['all_processed']:
-        user_data = st.session_state['user_data']
+            ###### START ANALYSIS
+            st.title("Text Summarization Analysis")
 
-
-        ###### START ANALYSIS
-        st.title("Text Summarization Analysis")
-
-        if 'selected_index' not in st.session_state:
-                st.session_state['selected_index'] = 0
-
-        selected_index = st.session_state['selected_index']
+            selected_index = st.session_state['selected_index']
 
             # Check if all texts have been processed
 
-        if selected_index >= len(user_data):
-            st.write("All texts have been processed. Algorithm finished.")
-            st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
-            st.stop()
+            if selected_index >= len(user_data):
+                st.write("All texts have been processed. Algorithm finished.")
+                st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
+                st.stop()
 
         st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
