@@ -57,11 +57,16 @@ def get_data(sheet_name):
     '''
     sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
     data = sheet.get_all_values()
-    header = data[0]  # This will select the first row as your column names.
-    values = data[1:]  # This will select everything from the second row onwards as your data.
-    df = pd.DataFrame(values, columns=header)
-    print(df.columns)
-    return df
+    if data:  # check if data is not empty
+        header = data[0]  # This will select the first row as your column names.
+        values = data[1:]  # This will select everything from the second row onwards as your data.
+        df = pd.DataFrame(values, columns=header)
+        print(df.columns)
+        return df
+    else:
+        print("The sheet is empty")
+        return pd.DataFrame()  # return an empty DataFrame
+
 
 
 def save_data(sheet_name, data):
