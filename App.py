@@ -93,29 +93,29 @@ else:
 
     st.title("Text Summarization Analysis")
 
-    if 'selected_index' not in st.session_state:
+if 'selected_index' not in st.session_state:
         st.session_state['selected_index'] = 0
 
-    selected_index = st.session_state['selected_index']
+selected_index = st.session_state['selected_index']
     '''
     # Check if all texts have been processed
     if selected_index >= len(user_data):
         st.write("All texts have been processed. Algorithm finished.")
         st.stop()
     '''
-    st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
+st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
-    selected_row = user_data.iloc[selected_index]
+selected_row = user_data.iloc[selected_index]
 
-    st.markdown(f"**Category**\n\n{selected_row['topic']}")
+st.markdown(f"**Category**\n\n{selected_row['topic']}")
 
-    st.markdown(f"**Original Text:**\n\n{selected_row['text']}")
+st.markdown(f"**Original Text:**\n\n{selected_row['text']}")
 
-    st.markdown(f"**Original Summary:**\n\n{selected_row['original_summary']}")
+st.markdown(f"**Original Summary:**\n\n{selected_row['original_summary']}")
 
-    st.markdown(f"**Generated Summary:**\n\n{selected_row['generated_summary']}")
+st.markdown(f"**Generated Summary:**\n\n{selected_row['generated_summary']}")
 
-    with st.sidebar:
+with st.sidebar:
         st.markdown("Select criteria")
         criteria = ['Readability', 'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness']
         criteria_info = {
@@ -140,7 +140,7 @@ else:
                 help=criteria_info[criterion]
             )
 
-    categories = [
+categories = [
         'Undefined',
         'Politik',
         'Wirtschaft',
@@ -152,7 +152,7 @@ else:
         'Geld/Finanzen'
     ]
 
-    categories_info = {
+categories_info = {
         'Undefined': "it's hard to identify",
         'Politik': 'Politische Themen und Entscheidungen, Migration, Asylrecht, Grenzsicherheit, Europäischen Union',
         'Wirtschaft': 'Die wirtschaftliche Aspekte, die Wechselwirkungen zwischen Wirtschaft, Politik und Verbrauchern. Wirtschaftlichen Entscheidungen, Marktbedingungen und politischen Strategien',
@@ -164,23 +164,23 @@ else:
         'Geld/Finanzen': 'Geldanlagen, Währungskrise, das Verhalten von Menschen im Zusammenhang mit Geld, Inflation, Preisen, Löhnen',
     }
 
-    if 'category' not in st.session_state:
+if 'category' not in st.session_state:
         st.session_state['category'] = categories[0]
 
-    st.session_state['category'] = st.sidebar.radio(
+st.session_state['category'] = st.sidebar.radio(
         'Choose a category',
         categories,
         index=categories.index(st.session_state['category'])
     )
 
-    st.sidebar.markdown(categories_info[st.session_state['category']])
+st.sidebar.markdown(categories_info[st.session_state['category']])
 
-    if 'comment' not in st.session_state:
+if 'comment' not in st.session_state:
         st.session_state['comment'] = ''
 
-    st.session_state['comment'] = st.sidebar.text_input("Comment", st.session_state['comment'])
+st.session_state['comment'] = st.sidebar.text_input("Comment", st.session_state['comment'])
 
-    if st.button("Show Additional Information"):
+if st.button("Show Additional Information"):
         info_columns = [
             "title",
             "dataset",
@@ -204,7 +204,7 @@ else:
             if column in selected_row:
                 st.write(f"{column}: {selected_row[column]}")
 
-    if st.button("Next"):
+if st.button("Next"):
         scores = [st.session_state[criterion] for criterion in criteria]
         for i, criterion in enumerate(criteria):
             # UPDATE DATA
