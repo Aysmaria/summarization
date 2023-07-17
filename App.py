@@ -77,31 +77,26 @@ def create_user_worksheet(user_name):
 create_user_worksheet("M")
 
 # Main function for Streamlit interface
-def main():
-    st.title("Google Sheets with Streamlit")
-    st.write("Please provide your name:")
+st.title("Text Summarization Analysis")
+st.write("Please provide your name:")
 
-    user_name = st.text_input('')  # Creates a text input box
+user_name = st.text_input('')  # Creates a text input box
 
-    if user_name:
-        st.write(f"Welcome, {user_name}. Creating your worksheet...")
+if user_name:
+    st.write(f"Welcome, {user_name}. Creating your worksheet...")
+    create_user_worksheet(user_name)
 
-        # Call your function with the user's name
-        create_user_worksheet(user_name)
+    if 'user_name' not in st.session_state:
+        st.session_state['user_name'] = user_name
 
-    else:
-        st.write("Waiting for user name...")
+    if st.button('Start'):
+            # Load user data
+        user_data = get_data(user_name)
 
-    st.button('Refresh')
+else:
+    st.write("Waiting for user name...")
 
-if __name__ == '__main__':
-    main()
-
-
-
-
-
-
+st.button('Start')
 
 '''
 # Ask for the user's name at the start of the session
@@ -120,7 +115,7 @@ st.write(user_data)
 
 
 st.title("Text Summarization Analysis")
-
+'''
 if 'selected_index' not in st.session_state:
         st.session_state['selected_index'] = 0
 
@@ -257,4 +252,3 @@ if st.button("Next"):
         st.session_state['comment'] = ''
         st.session_state['category'] = categories[0]
         st.experimental_rerun()
-'''
