@@ -97,7 +97,7 @@ if user_name:
 else:
     st.write("Waiting for user name...")
 
-
+print(st.write(user_data))
 '''
 # Ask for the user's name at the start of the session
 if 'user_name' not in st.session_state:
@@ -113,7 +113,7 @@ user_data = get_data(st.session_state['user_name'])
     # Display the data to the user
 st.write(user_data)
 
-
+'''
 st.title("Text Summarization Analysis")
 
 if 'selected_index' not in st.session_state:
@@ -253,4 +253,3 @@ if st.button("Next"):
         st.session_state['comment'] = ''
         st.session_state['category'] = categories[0]
         st.experimental_rerun()
-'''
