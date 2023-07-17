@@ -71,7 +71,7 @@ def create_user_worksheet(user_name):
         user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
 
         # Load the data from the master spreadsheet
-        master_data = get_data("test_data_sample.xlsx_gpt-3")
+        master_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
 
         # Populate the new worksheet with the data from the master spreadsheet
         set_with_dataframe(user_sheet, master_data)
