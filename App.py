@@ -52,11 +52,28 @@ def get_data(sheet_name, worksheet_name):
 
 # data = get_data("test_data_sample.xlsx_gpt-3", "ü")
 # print(data)
-
+'''
 def save_data(sheet_name, data):
     sheet = access_sheet(sheet_name) # Access the first worksheet
     set_with_dataframe(sheet, data)
+'''
 
+def save_data(sheet_name, worksheet_name, data):
+    # Access the Google Sheets document
+    spreadsheet = access_sheet(sheet_name)
+
+    # Access the specific worksheet
+    try:
+        worksheet = spreadsheet.worksheet(worksheet_name)
+    except gspread.exceptions.WorksheetNotFound:
+        # If the worksheet does not exist, create it
+        worksheet = spreadsheet.add_worksheet(title=worksheet_name, rows="1", cols="1")
+
+    # Clear all the data before writing new
+    worksheet.clear()
+
+    # Write the DataFrame to the worksheet
+    set_with_dataframe(worksheet, data)
 # save_data("test_data_sample.xlsx_gpt-3", data)
 def create_user_worksheet(user_name):
     # Access the spreadsheet
