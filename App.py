@@ -27,35 +27,12 @@ def access_sheet(sheet_name):
     print("Accessed file:", sheet_name)
     return sheet
 
-
-'''
-@st.cache_data
-def get_data():
-        
-        
-        sheet = access_sheet('Test')
-        data = sheet.get_all_values()
-        df = pd.DataFrame(data[1:],
-                          columns=['text', 'original_summary', 'topic', 'title', 'dataset_name', 'generated_summary',
-                                   'params', 'bert_score_text_generated_summary',
-                                   'bert_score_summary_generated_summary', 'rouge1_scores_text_generated_summary',
-                                   'rouge1_scores_summary_generated_summary', 'rouge2_scores_text_generated_summary',
-                                   'rouge2_scores_summary_generated_summary', 'rougeL_scores_text_generated_summary',
-                                   'rougeL_scores_summary_generated_summary', 'model_name', 'Readability',
-                                   'Informativeness', 'Fluency', 'Conciseness', 'Factual correctness'])
-
-        # df['new_column_name'] = None
-        print(df)
-        # set_with_dataframe(sheet, df)
-        return df
-'''
-
+# access_sheet("test_data_sample.xlsx_gpt-3")
 
 def get_data(sheet_name):
-    '''
-    Read the data from the first worksheet of a Google Sheets document.
-    '''
-    sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
+    spreadsheet = access_sheet(sheet_name)
+    # Access the first worksheet
+    sheet = spreadsheet.get_worksheet(0)
     data = sheet.get_all_values()
     if data:  # check if data is not empty
         header = data[0]  # This will select the first row as your column names.
@@ -68,37 +45,34 @@ def get_data(sheet_name):
         return pd.DataFrame()  # return an empty DataFrame
 
 
+data = get_data("test_data_sample.xlsx_gpt-3")
 
 def save_data(sheet_name, data):
-    '''
-    Save the data to the first worksheet of a Google Sheets document.
-    '''
+  
     sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
     set_with_dataframe(sheet, data)
 
+# save_data("test_data_sample.xlsx_gpt-3", data)
 
-def create_user_spreadsheet(user_name):
-    # Create a new spreadsheet for this user
-    user_sheet = access_sheet(user_name)
+
+def create_user_worksheet(user_name):
+    # Access the spreadsheet
+    spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
+
+    # Create a new worksheet for this user
+    user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
 
     # Load the data from the master spreadsheet
-    master_data = get_data("Test")  # replace "master_spreadsheet_name" with the name of your master spreadsheet
-    print(master_data)
-    # Populate the new spreadsheet with the data from the master spreadsheet
-    set_with_dataframe(user_sheet.sheet1, master_data)
+    master_data = get_data("test_data_sample.xlsx_gpt-3")
 
-    print(f"Created and populated spreadsheet for user: {user_name}")
+    # Populate the new worksheet with the data from the master spreadsheet
+    set_with_dataframe(user_sheet, master_data)
 
-
-
-'''
-def load_data(file_path):
-    return pd.read_excel(file_path)
+    print(f"Created and populated worksheet for user: {user_name}")
 
 
-def save_data(file_path, data):
-    data.to_excel(file_path, index=False)
-'''
+# create_user_worksheet("M")
+
 # Ask for the user's name at the start of the session
 # Ask for the user's name at the start of the session
 if 'user_id' not in st.session_state:
@@ -248,7 +222,7 @@ else:
         save_data(st.session_state['user_id'], data)
 
         st.session_state['selected_index'] = (selected_index + 1) % len(data)
-    
+
         for criterion in criteria:
             st.session_state[criterion] = 0
         st.session_state['comment'] = ''
