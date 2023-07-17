@@ -48,7 +48,7 @@ def get_data(sheet_name):
 # data = get_data("test_data_sample.xlsx_gpt-3")
 
 def save_data(sheet_name, data):
-    sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
+    sheet = access_sheet(sheet_name) # Access the first worksheet
     set_with_dataframe(sheet, data)
 
 # save_data("test_data_sample.xlsx_gpt-3", data)
@@ -90,7 +90,7 @@ else:
     # Display the data to the user
     st.write(user_data)
 
-'''
+
     st.title("Text Summarization Analysis")
 
     if 'selected_index' not in st.session_state:
@@ -98,13 +98,13 @@ else:
 
     selected_index = st.session_state['selected_index']
     # Check if all texts have been processed
-    if selected_index >= len(data):
+    if selected_index >= len(user_data):
         st.write("All texts have been processed. Algorithm finished.")
         st.stop()
 
-    st.markdown(f"**Text {selected_index + 1} of {len(data)}**")
+    st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
-    selected_row = data.iloc[selected_index]
+    selected_row = user_data.iloc[selected_index]
 
     st.markdown(f"**Category**\n\n{selected_row['topic']}")
 
@@ -207,22 +207,21 @@ else:
         scores = [st.session_state[criterion] for criterion in criteria]
         for i, criterion in enumerate(criteria):
             # UPDATE DATA
-            data.at[selected_index, criterion] = scores[i]
+            user_data.at[selected_index, criterion] = scores[i]
 
-        data.at[selected_index, 'Comment'] = st.session_state['comment']
-        data.at[selected_index, 'Category'] = st.session_state['category']
+        user_data.at[selected_index, 'Comment'] = st.session_state['comment']
+        user_data.at[selected_index, 'Category'] = st.session_state['category']
 
         # Add user_id to the row in the DataFrame
-        data.at[selected_index, 'User'] = st.session_state['user_id']
+        user_data.at[selected_index, 'User'] = st.session_state['user_id']
 
         # Save this row of data to the user's own spreadsheet
-        save_data(st.session_state['user_id'], data)
+        save_data(st.session_state['user_id'], user_data)
 
-        st.session_state['selected_index'] = (selected_index + 1) % len(data)
+        st.session_state['selected_index'] = (selected_index + 1) % len(user_data)
 
         for criterion in criteria:
             st.session_state[criterion] = 0
         st.session_state['comment'] = ''
         st.session_state['category'] = categories[0]
         st.experimental_rerun()
-'''
