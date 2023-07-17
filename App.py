@@ -75,20 +75,25 @@ def save_data(sheet_name, worksheet_name, data):
     # Write the DataFrame to the worksheet
     set_with_dataframe(worksheet, data)
 # save_data("test_data_sample.xlsx_gpt-3", data)
+
 def create_user_worksheet(user_name):
     # Access the spreadsheet
     spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
+
+    # Load the data from the master spreadsheet
+    master_data = get_data("test_data_sample.xlsx_gpt-3", "masterworksheet")  # assuming "Master" is your master worksheet name
+
+    # Get the number of rows and columns in the master data
+    num_rows = len(master_data)
+    num_cols = len(master_data.columns)
 
     # Check if a worksheet with this user's name already exists
     try:
         user_sheet = spreadsheet.worksheet(user_name)
         print(f"Worksheet for user: {user_name} already exists")
     except gspread.WorksheetNotFound:
-        # If not, create a new worksheet for this user
-        user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
-
-        # Load the data from the master spreadsheet
-        master_data = get_data("test_data_sample.xlsx_gpt-3", "masterworksheet")  # assuming "Master" is your master worksheet name
+        # If not, create a new worksheet for this user with the same number of rows and columns as the masterworksheet
+        user_sheet = spreadsheet.add_worksheet(title=user_name, rows=str(num_rows), cols=str(num_cols))
 
         # Populate the new worksheet with the data from the master spreadsheet
         set_with_dataframe(user_sheet, master_data)
@@ -100,6 +105,7 @@ def create_user_worksheet(user_name):
     print(user_data)
     # Return the user data
     return user_data
+
 
 # create_user_worksheet("Marusya4")
 
@@ -127,9 +133,9 @@ if user_name:
         selected_index = st.session_state['selected_index']
 
             # Check if all texts have been processed
-
         if selected_index >= len(user_data):
-            st.write("All texts have been processed. Algorithm finished.")
+            st.write("All texts have been processed. Thank you.")
+            st.balloons()  # Streamlit balloons
             st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
             st.stop()
 
