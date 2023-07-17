@@ -48,7 +48,6 @@ def get_data(sheet_name):
 # data = get_data("test_data_sample.xlsx_gpt-3")
 
 def save_data(sheet_name, data):
-  
     sheet = access_sheet(sheet_name).sheet1  # Access the first worksheet
     set_with_dataframe(sheet, data)
 
@@ -59,16 +58,22 @@ def create_user_worksheet(user_name):
     # Access the spreadsheet
     spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
 
-    # Create a new worksheet for this user
-    user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
+    # Check if a worksheet with this user's name already exists
+    try:
+        user_sheet = spreadsheet.worksheet(user_name)
+        print(f"Worksheet for user: {user_name} already exists")
+    except gspread.WorksheetNotFound:
+        # If not, create a new worksheet for this user
+        user_sheet = spreadsheet.add_worksheet(title=user_name, rows="100", cols="20")
 
-    # Load the data from the master spreadsheet
-    master_data = get_data("test_data_sample.xlsx_gpt-3")
+        # Load the data from the master spreadsheet
+        master_data = get_data("test_data_sample.xlsx_gpt-3")
 
-    # Populate the new worksheet with the data from the master spreadsheet
-    set_with_dataframe(user_sheet, master_data)
+        # Populate the new worksheet with the data from the master spreadsheet
+        set_with_dataframe(user_sheet, master_data)
 
-    print(f"Created and populated worksheet for user: {user_name}")
+        print(f"Created and populated worksheet for user: {user_name}")
+
 
 # create_user_worksheet("M")
 
