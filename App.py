@@ -97,11 +97,12 @@ else:
         st.session_state['selected_index'] = 0
 
     selected_index = st.session_state['selected_index']
+    '''
     # Check if all texts have been processed
     if selected_index >= len(user_data):
         st.write("All texts have been processed. Algorithm finished.")
         st.stop()
-
+    '''
     st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
     selected_row = user_data.iloc[selected_index]
