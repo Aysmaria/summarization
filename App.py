@@ -96,7 +96,6 @@ if user_name:
 else:
     st.write("Waiting for user name...")
 
-st.button('Start')
 
 '''
 # Ask for the user's name at the start of the session
