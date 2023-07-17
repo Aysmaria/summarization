@@ -5,8 +5,8 @@ import gspread
 from gspread_dataframe import set_with_dataframe
 
 
-    # Read database on Google sheet
-    ###############################
+# Read database on Google sheet
+###############################
 
 def access_sheet(sheet_name):
     '''
@@ -74,8 +74,36 @@ def create_user_worksheet(user_name):
         print(f"Created and populated worksheet for user: {user_name}")
 
 
-# create_user_worksheet("M")
+create_user_worksheet("M")
 
+# Main function for Streamlit interface
+def main():
+    st.title("Google Sheets with Streamlit")
+    st.write("Please provide your name:")
+
+    user_name = st.text_input('')  # Creates a text input box
+
+    if user_name:
+        st.write(f"Welcome, {user_name}. Creating your worksheet...")
+
+        # Call your function with the user's name
+        create_user_worksheet(user_name)
+
+    else:
+        st.write("Waiting for user name...")
+
+    st.button('Refresh')
+
+if __name__ == '__main__':
+    main()
+
+
+
+
+
+
+
+'''
 # Ask for the user's name at the start of the session
 if 'user_name' not in st.session_state:
     st.session_state['user_name'] = st.text_input('Please enter your name to begin')
@@ -97,12 +125,12 @@ if 'selected_index' not in st.session_state:
         st.session_state['selected_index'] = 0
 
 selected_index = st.session_state['selected_index']
-'''
+
     # Check if all texts have been processed
     if selected_index >= len(user_data):
         st.write("All texts have been processed. Algorithm finished.")
         st.stop()
-'''
+
 st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
 selected_row = user_data.iloc[selected_index]
@@ -229,3 +257,4 @@ if st.button("Next"):
         st.session_state['comment'] = ''
         st.session_state['category'] = categories[0]
         st.experimental_rerun()
+'''
