@@ -28,11 +28,15 @@ def access_sheet(sheet_name):
     return sheet
 
 # access_sheet("test_data_sample.xlsx_gpt-3")
-
-def get_data(sheet_name):
+def get_data(sheet_name, worksheet_name):
     spreadsheet = access_sheet(sheet_name)
-    # Access the first worksheet
-    sheet = spreadsheet.get_worksheet(0)
+    # Access the specific worksheet
+    try:
+        sheet = spreadsheet.worksheet(worksheet_name)
+    except gspread.WorksheetNotFound:
+        print(f"No worksheet named {worksheet_name} in the spreadsheet.")
+        return pd.DataFrame()  # return an empty DataFrame if the worksheet is not found
+
     data = sheet.get_all_values()
     if data:  # check if data is not empty
         header = data[0]  # This will select the first row as your column names.
@@ -41,8 +45,9 @@ def get_data(sheet_name):
         print(df.columns)
         return df
     else:
-        print("The sheet is empty")
-        return pd.DataFrame()  # return an empty DataFrame
+        print(f"The worksheet {worksheet_name} is empty.")
+        return pd.DataFrame()  # return an empty DataFrame if the data is empty
+
 
 
 # data = get_data("test_data_sample.xlsx_gpt-3")
@@ -91,13 +96,13 @@ if user_name:
 
     if st.button('Start'):
             # Load user data
-        user_data = get_data(user_name)
+        user_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
         st.write(user_data)
 
 else:
     st.write("Waiting for user name...")
 
-print(user_data)
+
 '''
 # Ask for the user's name at the start of the session
 if 'user_name' not in st.session_state:
