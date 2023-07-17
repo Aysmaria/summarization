@@ -74,19 +74,16 @@ def create_user_worksheet(user_name):
 # create_user_worksheet("M")
 
 # Ask for the user's name at the start of the session
-# Ask for the user's name at the start of the session
 if 'user_id' not in st.session_state:
     st.session_state['user_id'] = st.text_input('Please enter your name to begin')
 else:
-
-
 
     # Create a new spreadsheet for this user if it doesn't exist
     try:
         access_sheet(st.session_state['user_id'])
     except gspread.SpreadsheetNotFound:
         # Create and populate the user's spreadsheet with data from the master spreadsheet
-        create_user_spreadsheet(st.session_state['user_id'])
+        create_user_worksheet(st.session_state['user_id'])
 
 
 
