@@ -133,6 +133,7 @@ if user_name:
         selected_index = st.session_state['selected_index']
 
             # Check if all texts have been processed
+        print(len(user_data))
         if selected_index >= len(user_data):
             st.write("All texts have been processed. Thank you.")
             st.balloons()  # Streamlit balloons
