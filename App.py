@@ -126,15 +126,15 @@ if user_name:
 
     if 'user_data' in st.session_state and not st.session_state['all_processed']:
         user_data = st.session_state['user_data']
-
+        print(len(user_data))
             ###### START ANALYSIS
         st.title("Text Summarization Analysis")
 
         selected_index = st.session_state['selected_index']
 
             # Check if all texts have been processed
-        print(len(user_data))
-        if selected_index >= len(user_data):
+
+        if selected_index >= len(user_data)-1:
             st.write("All texts have been processed. Thank you.")
             st.balloons()  # Streamlit balloons
             st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
