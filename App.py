@@ -45,7 +45,7 @@ def get_data(sheet_name):
         return pd.DataFrame()  # return an empty DataFrame
 
 
-data = get_data("test_data_sample.xlsx_gpt-3")
+# data = get_data("test_data_sample.xlsx_gpt-3")
 
 def save_data(sheet_name, data):
   
@@ -70,7 +70,6 @@ def create_user_worksheet(user_name):
 
     print(f"Created and populated worksheet for user: {user_name}")
 
-
 # create_user_worksheet("M")
 
 # Ask for the user's name at the start of the session
@@ -85,7 +84,7 @@ else:
         create_user_worksheet(st.session_state['user_id'])
 
     # Load the data from the user's spreadsheet
-    data = get_data(st.session_state['user_id'])
+    data = get_data("test_data_sample.xlsx_gpt-3")
     print(data)
 
 '''
