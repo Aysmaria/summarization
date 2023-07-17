@@ -77,7 +77,6 @@ def create_user_worksheet(user_name):
 if 'user_id' not in st.session_state:
     st.session_state['user_id'] = st.text_input('Please enter your name to begin')
 else:
-
     # Create a new spreadsheet for this user if it doesn't exist
     try:
         access_sheet(st.session_state['user_id'])
@@ -85,12 +84,11 @@ else:
         # Create and populate the user's spreadsheet with data from the master spreadsheet
         create_user_worksheet(st.session_state['user_id'])
 
-
-
     # Load the data from the user's spreadsheet
     data = get_data(st.session_state['user_id'])
+    print(data)
 
-
+'''
     st.title("Text Summarization Analysis")
 
     if 'selected_index' not in st.session_state:
@@ -225,3 +223,4 @@ else:
         st.session_state['comment'] = ''
         st.session_state['category'] = categories[0]
         st.experimental_rerun()
+'''
