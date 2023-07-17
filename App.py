@@ -97,6 +97,7 @@ if user_name:
 
     if 'user_name' not in st.session_state:
         st.session_state['user_name'] = user_name
+        print(st.session_state['user_name'])
 
     if st.button('Start'):
             # Load user data
