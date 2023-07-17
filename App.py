@@ -7,7 +7,7 @@ from gspread_dataframe import set_with_dataframe
 
     # Read database on Google sheet
     ###############################
-@st.cache_resource
+
 def access_sheet(sheet_name):
     '''
     Access or create a Google Sheets document.
