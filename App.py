@@ -96,7 +96,7 @@ def create_user_worksheet(user_name):
         print(f"Created and populated worksheet for user: {user_name}")
 
     # Now that the user worksheet is populated, get the data from it
-    user_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
+    user_data = get_data("param_search_final_hugging_face_param_search", user_name)
     # Return the user data
     return user_data
 
