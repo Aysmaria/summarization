@@ -41,10 +41,9 @@ def get_data(sheet_name, worksheet_name):
 
     data = sheet.get_all_values()
     if data:  # check if data is not empty
-        header = data[0]  # This will select the first row as your column names.
-        values = data[1:]  # This will select everything from the second row onwards as your data.
+        header = data[0]  # This will select the first row as column names.
+        values = data[1:]  # This will select everything from the second row onwards as data.
         df = pd.DataFrame(values, columns=header)
-        # print(df.columns)
         return df
     else:
         print(f"The worksheet {worksheet_name} is empty.")
@@ -74,10 +73,10 @@ def save_data(sheet_name, worksheet_name, data):
 
 def create_user_worksheet(user_name):
     # Access the spreadsheet
-    spreadsheet = access_sheet("test_data_sample.xlsx_gpt-3")
+    spreadsheet = access_sheet("param_search_final_hugging_face_param_search")
 
     # Load the data from the master spreadsheet
-    master_data = get_data("test_data_sample.xlsx_gpt-3", "masterworksheet")  # assuming "Master" is your master worksheet name
+    master_data = get_data("param_search_final_hugging_face_param_search", "masterworksheet")  # assuming "Master" is your master worksheet name
 
     # Get the number of rows and columns in the master data
     num_rows = len(master_data)
@@ -98,18 +97,17 @@ def create_user_worksheet(user_name):
 
     # Now that the user worksheet is populated, get the data from it
     user_data = get_data("test_data_sample.xlsx_gpt-3", user_name)
-    print(user_data)
     # Return the user data
     return user_data
 
 
 # create_user_worksheet("Marusya4")
 
-    ### INITIATE STREAMLIT
+### INITIATE STREAMLIT
 
-st.title("Text Summarization Analysis")
+st.title(" 📰 Text Summarization Analysis")
 st.write("""
-    In the context of my master's thesis on the topic of "Automatic Text Summarization in German", I need help with evaluation. 
+    In the context of my master's thesis on the topic of "Automatic Text Summarization in German language: ", I need help with evaluation. 
     The steps to be performed are quite simple. There is an original text, an original summary, and several variants of text summaries. 
     Your task is first to provide your nickname, and then to evaluate the summaries based on the criteria provided on the right.
     """)
@@ -131,12 +129,9 @@ if user_name:
         user_data = st.session_state['user_data']
         print(len(user_data))
         ###### START ANALYSIS
-
-
         selected_index = st.session_state['selected_index']
 
         # Check if all texts have been processed
-
         if selected_index >= len(user_data)-1:
             st.write("All texts have been processed :)  Thank you for participation 🩷")
             st.balloons()  # Streamlit balloons
