@@ -77,7 +77,9 @@ def create_user_worksheet(user_name):
 
     # Load the data from the master spreadsheet
     master_data = get_data("param_search_final_hugging_face_param_search", "masterworksheet")  # assuming "Master" is your master worksheet name
-
+    ### sort texts
+    master_data = master_data.sort_values(by='text')
+    print(master_data)
     # Get the number of rows and columns in the master data
     num_rows = len(master_data)
     num_cols = len(master_data.columns)
@@ -97,9 +99,6 @@ def create_user_worksheet(user_name):
 
     # Now that the user worksheet is populated, get the data from it
     user_data = get_data("param_search_final_hugging_face_param_search", user_name)
-    ### sort texts
-    user_data = user_data.sort_values(by='text')
-    print(user_data)
     # Return the user data
     return user_data
 
