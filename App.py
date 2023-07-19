@@ -97,6 +97,8 @@ def create_user_worksheet(user_name):
 
     # Now that the user worksheet is populated, get the data from it
     user_data = get_data("param_search_final_hugging_face_param_search", user_name)
+    ### sort texts 
+    user_data = user_data.sort_values(by='text')
     # Return the user data
     return user_data
 
