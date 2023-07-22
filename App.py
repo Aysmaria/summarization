@@ -44,12 +44,13 @@ def get_data(sheet_name, worksheet_name):
         header = data[0]  # This will select the first row as column names.
         values = data[1:]  # This will select everything from the second row onwards as data.
         df = pd.DataFrame(values, columns=header)
+        print("data: ", df)
         return df
     else:
         print(f"The worksheet {worksheet_name} is empty.")
         return pd.DataFrame()  # return an empty DataFrame if the data is empty
 
-# data = get_data("test_data_sample.xlsx_gpt-3", "ü")
+# data = get_data("sorted_param_search_final_gpt_param_search", "Master")
 # print(data)
 
 
@@ -73,10 +74,10 @@ def save_data(sheet_name, worksheet_name, data):
 
 def create_user_worksheet(user_name):
     # Access the spreadsheet
-    spreadsheet = access_sheet("sorted_param_search_gpt_param_search")
+    spreadsheet = access_sheet("sorted_param_search_final_gpt_param_search")
 
     # Load the data from the master spreadsheet
-    master_data = get_data("sorted_param_search_final_gpt_param_search", "Master")  # assuming "Master" is your master worksheet name
+    master_data = get_data("sorted_param_search_final_gpt_param_search", "Master")  # assuming "Master" is master worksheet name
     ### sort texts
     # master_data = master_data.sort_values(by='text')
     # print(master_data)
@@ -91,19 +92,27 @@ def create_user_worksheet(user_name):
     except gspread.WorksheetNotFound:
         # If not, create a new worksheet for this user with the same number of rows and columns as the masterworksheet
         user_sheet = spreadsheet.add_worksheet(title=user_name, rows=str(num_rows), cols=str(num_cols))
+        print("Master data:")
+        print(master_data)
 
         # Populate the new worksheet with the data from the master spreadsheet
-        set_with_dataframe(user_sheet, master_data)
+        try:
+            set_with_dataframe(user_sheet, master_data)
+            print(f"Data saved successfully to worksheet: {user_name}")
+        except Exception as e:
+            print(f"Error occurred while saving data: {e}")
 
         print(f"Created and populated worksheet for user: {user_name}")
 
     # Now that the user worksheet is populated, get the data from it
     user_data = get_data("sorted_param_search_final_gpt_param_search", user_name)
+    print(user_data)
     # Return the user data
     return user_data
 
 
-# create_user_worksheet("Marusya4")
+# create_user_worksheet("Marusya2")
+
 
 ### INITIATE STREAMLIT
 
