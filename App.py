@@ -74,10 +74,10 @@ def save_data(sheet_name, worksheet_name, data):
 
 def create_user_worksheet(user_name):
     # Access the spreadsheet
-    spreadsheet = access_sheet("sorted_param_search_final_gpt_param_search")
+    spreadsheet = access_sheet("param_search_final_chat_gpt_param_search")
 
     # Load the data from the master spreadsheet
-    master_data = get_data("sorted_param_search_final_gpt_param_search", "Master")  # assuming "Master" is master worksheet name
+    master_data = get_data("param_search_final_chat_gpt_param_search", "Master")  # assuming "Master" is master worksheet name
     ### sort texts
     # master_data = master_data.sort_values(by='text')
     # print(master_data)
@@ -105,7 +105,7 @@ def create_user_worksheet(user_name):
         print(f"Created and populated worksheet for user: {user_name}")
 
     # Now that the user worksheet is populated, get the data from it
-    user_data = get_data("sorted_param_search_final_gpt_param_search", user_name)
+    user_data = get_data("param_search_final_chat_gpt_param_search", user_name)
     print(user_data)
     # Return the user data
     return user_data
@@ -266,7 +266,7 @@ if user_name:
             user_data.at[selected_index, 'Category'] = st.session_state['category']
 
             # Save the updated data to the worksheet
-            save_data("sorted_param_search_final_gpt_param_search", st.session_state['user_name'], user_data)
+            save_data("param_search_final_chat_gpt_param_search", st.session_state['user_name'], user_data)
 
             if 'selected_index' not in st.session_state:
                 st.session_state['selected_index'] = 0  # or any other default value
