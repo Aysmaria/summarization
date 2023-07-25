@@ -291,19 +291,19 @@ if user_name:
 
                 # Save the updated data to the worksheet
                 save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-                if st.button('Submit'):
-                    st.write("Thank you for participation 🩷")
-                    st.balloons()  # Streamlit balloons
-                    st.stop()
 
-            # Reset the scores, comment, and category in the session_state
+                # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
                 st.session_state[criterion] = 0
-            st.session_state['comment'] = ''
-            st.session_state['category'] = categories[0]
+                st.session_state['comment'] = ''
+                st.session_state['category'] = categories[0]
 
-                # Rerun the app to show the next text
-            st.experimental_rerun()
+            if st.session_state['all_processed'] and st.button('Submit'):
+                st.write("Thank you for participation 🩷")
+                st.balloons()  # Streamlit balloons
+                st.stop()
+           
+
 
 
 
