@@ -285,7 +285,8 @@ if user_name:
                 submit_button = st.button("Submit")
 
                 if submit_button:
-                    user_data.at[selected_index, 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                    user_data.at[st.session_state[
+                                     'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
                     save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
