@@ -294,9 +294,9 @@ if user_name:
                         # Save the updated data to the worksheet
                         save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
-                    if st.button('Submit'):  # Display the "Submit" button always, not dependent on user_experience
-                        st.write("Thank you for participation 🩷")
-                        st.balloons()  # Streamlit balloons
+                        if st.button('Submit'):  # Display the "Submit" button always, not dependent on user_experience
+                            st.write("Thank you for participation 🩷")
+                            st.balloons()  # Streamlit balloons
 
             # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
