@@ -297,17 +297,16 @@ if user_name:
                         # Save the updated data to the worksheet
                         save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
-                    if st.button('Submit'):
+                    if st.button('Submit'):  # Display the "Submit" button always, not dependent on user_experience
                         st.write("Thank you for participation 🩷")
                         st.balloons()  # Streamlit balloons
-                        st.session_state['submitted'] = True  # Mark that the user has submitted their feedback
 
-                        # Reset the scores, comment, and category in the session_state only if not submitted
-                    if not st.session_state['submitted']:
-                        for criterion in criteria:
-                            st.session_state[criterion] = 0
-                            st.session_state['comment'] = ''
-                            st.session_state['category'] = categories[0]
+            # Reset the scores, comment, and category in the session_state
+            for criterion in criteria:
+                st.session_state[criterion] = 0
+                st.session_state['comment'] = ''
+                st.session_state['category'] = categories[0]
+
 
 
 
