@@ -273,20 +273,19 @@ if user_name:
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
             else:
-                st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
+                st.session_state['all_processed'] = True
+                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)# Update all_processed when all texts have been processed
                 st.write("All texts have been processed, you are a hero :)")
-
-                if st.session_state['all_processed']:
                     # Add the text input for user experience
-                    user_experience = st.text_input(
-                        'Please share your overall experience. What do you think about the generated summaries?')
+                user_experience = st.text_input(
+                    'Please share your overall experience. What do you think about the generated summaries?')
 
-                    if user_experience:  # The user has provided their experience
+                if user_experience:  # The user has provided their experience
                         # Find the user's row and update the 'opinion' column
-                        user_data.loc[user_data['User Name'] == st.session_state['user_name'], 'opinion'] = user_experience
+                    user_data.loc[user_data['User Name'] == st.session_state['user_name'], 'opinion'] = user_experience
 
                         # Save the updated data to the worksheet
-                        save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
                     if st.button('Submit'):  # Display the "Submit" button always, not dependent on user_experience
                         st.write("Thank you for participation 🩷")
