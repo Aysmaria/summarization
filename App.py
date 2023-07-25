@@ -273,28 +273,20 @@ if user_name:
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
             else:
-                st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
 
-                # Ask for user's opinion
-                if 'user_opinion' not in st.session_state:
-                    st.session_state['user_opinion'] = ''
-                st.session_state['user_opinion'] = st.text_input("Please enter your opinion about the data processing:",
-                                                                 value=st.session_state['user_opinion'])
+                st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
+                st.write("You have reached the end of the data.")
+                user_opinion = st.text_input("Please enter your opinion about the data processing:")
+                st.session_state['user_opinion'] = user_opinion  # Store the user opinion in session state
 
-                submit_button = st.button("Submit Opinion")
+                submit_button = st.button("Submit")
 
                 if submit_button:
-                    # Create a new DataFrame to store user opinions
-                    if 'opinions_data' not in st.session_state:
-                        st.session_state['opinions_data'] = pd.DataFrame(columns=['User Name', 'User Opinion'])
+                    user_data.at[selected_index, 'User Opinion'] = st.session_state['user_opinion']
+                    print(f"Updated user opinion: {user_data.at[selected_index, 'User Opinion']}")  # Debug print
 
-                    # Add the user's opinion as a new row in the DataFrame
-                    st.session_state['opinions_data'] = st.session_state['opinions_data'].append(
-                        {'User Name': st.session_state['user_name'], 'User Opinion': st.session_state['user_opinion']},
-                        ignore_index=True)
-
-                    # Save the updated data
-                    save_data("user_opinions", st.session_state['user_name'], st.session_state['opinions_data'])
+                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+                    print("Data saved")  # Debug print
 
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
