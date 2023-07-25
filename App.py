@@ -144,15 +144,15 @@ if user_name:
         ###### START ANALYSIS
         selected_index = st.session_state['selected_index']
 
-        text_number = st.number_input('Enter text number to jump to', min_value=1, max_value=len(user_data)-1,
-                                      value=1)
+        text_number = st.number_input('Enter text number to jump to', min_value=1, max_value=len(user_data), value=1)
+
         if st.button('Jump to text number'):
-            st.session_state['selected_index'] = text_number
+            st.session_state['selected_index'] = text_number - 1
             st.experimental_rerun()
 
 
         # Check if all texts have been processed
-        if selected_index >= len(user_data)-1:
+        if selected_index >= len(user_data):
             st.write("All texts have been processed :)  Thank you for participation 🩷")
             st.balloons()  # Streamlit balloons
             st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
