@@ -152,7 +152,7 @@ if user_name:
 
 
         # Check if all texts have been processed
-        if selected_index >= len(user_data):
+        if st.session_state['selected_index'] >= len(user_data):
             st.write("All texts have been processed :)  Thank you for participation 🩷")
             st.balloons()  # Streamlit balloons
             st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
@@ -285,4 +285,6 @@ if user_name:
 
                 # Rerun the app to show the next text
             st.experimental_rerun()
+
+
 
