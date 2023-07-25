@@ -274,25 +274,28 @@ if user_name:
                 st.session_state['selected_index'] += 1
             else:
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
-                st.write("All texts have been processed :)")
+                st.write("All texts have been processed, you are a hero :)")
+
                 # Add the text input for user experience
-                user_experience = st.text_input('Please share your overall experience. What do you think about generated summaries?')
+                user_experience = st.text_input(
+                    'Please share your overall experience. What do you think about the generated summaries?')
 
-                # Create a new DataFrame to hold this information
-                user_experience_df = pd.DataFrame({
-                    'User Name': [st.session_state['user_name']],
-                    'Overall Experience': [user_experience]
-                })
+                if st.button('Submit'):
+                    # Create a new DataFrame to hold this information
+                    user_experience_df = pd.DataFrame({
+                        'User Name': [st.session_state['user_name']],
+                        'Overall Experience': [user_experience]
+                    })
 
-                # Add this to the user_data DataFrame as a new column named "opinion"
-                user_data['opinion'] = user_experience
+                    # Add this to the user_data DataFrame as a new column named "opinion"
+                    user_data['opinion'] = user_experience
 
-                # Save the updated data to the worksheet
-                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+                    # Save the updated data to the worksheet
+                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
-                st.write("Thank you for participation 🩷")
-                st.balloons()  # Streamlit balloons
-                st.stop()
+                    st.write("Thank you for participation 🩷")
+                    st.balloons()  # Streamlit balloons
+                    st.stop()
 
             # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
