@@ -74,10 +74,10 @@ def save_data(sheet_name, worksheet_name, data):
 
 def create_user_worksheet(user_name):
     # Access the spreadsheet
-    spreadsheet = access_sheet("param_search_final_chat_gpt_param_search")
+    spreadsheet = access_sheet("sorted_FINAL_DATA")
 
     # Load the data from the master spreadsheet
-    master_data = get_data("param_search_final_chat_gpt_param_search", "Master")  # assuming "Master" is master worksheet name
+    master_data = get_data("sorted_FINAL_DATA", "Master")  # assuming "Master" is master worksheet name
     ### sort texts
     # master_data = master_data.sort_values(by='text')
     # print(master_data)
@@ -105,7 +105,7 @@ def create_user_worksheet(user_name):
         print(f"Created and populated worksheet for user: {user_name}")
 
     # Now that the user worksheet is populated, get the data from it
-    user_data = get_data("param_search_final_chat_gpt_param_search", user_name)
+    user_data = get_data("sorted_FINAL_DATA", user_name)
     print(user_data)
     # Return the user data
     return user_data
@@ -118,9 +118,11 @@ def create_user_worksheet(user_name):
 
 st.title(" 📰 Text Summarization Analysis")
 st.write("""
-    In the context of my master's thesis on the topic of "Automatic Text Summarization in German language: ", I need help with evaluation. 
-    The steps to be performed are quite simple. There is an original text, an original summary, and several variants of text summaries. 
-    Your task is first to provide your nickname, and then to evaluate the summaries based on the criteria provided on the right.
+While I am working on my master's thesis entitled "Automatic text summarization in German", I am looking for your support to evaluate the generated summaries of news articles. The process is quite simple. You will receive an original text along with its original summary and various generated summaries.\n
+To start, you need to choose a nickname. Your task is to evaluate the summaries based on certain criteria listed on the left side of the screen. Click the info button to understand what each criterion contains. A five-point scale is used to evaluate each element: 1. Very poor, 2. Poor, 3. Barely acceptable, 4. Good, 5. Very good.\n
+At the beginning of the evaluation, you will come across 78 texts but do not be discouraged. You only need to review 6 unique texts along with their 13 respective shortened summaries.\n
+If your session is interrupted, simply enter your nickname and text number to continue from where you left off. At the top of the page, you will see a sign saying "running". This means that your response will be processed and you will soon be redirected to the next text. \n
+The whole process should take about 30 minutes of your time. I appreciate your support very much! 💕
     """)
 st.write("Please provide your name:")
 
@@ -267,7 +269,7 @@ if user_name:
             user_data.at[selected_index, 'Category'] = st.session_state['category']
 
             # Save the updated data to the worksheet
-            save_data("param_search_final_chat_gpt_param_search", st.session_state['user_name'], user_data)
+            save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
             if 'selected_index' not in st.session_state:
                 st.session_state['selected_index'] = 0  # or any other default value
