@@ -150,15 +150,6 @@ if user_name:
             st.session_state['selected_index'] = text_number - 1
             st.experimental_rerun()
 
-        '''
-        # Check if all texts have been processed
-        if st.session_state['selected_index'] >= len(user_data):
-            st.write("All texts have been processed :)  Thank you for participation 🩷")
-            st.balloons()  # Streamlit balloons
-            st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
-            st.stop()
-        '''
-
         st.markdown(f"**Text {selected_index + 1} of {len(user_data)}**")
 
         selected_row = user_data.iloc[selected_index]
@@ -283,7 +274,7 @@ if user_name:
                 st.session_state['selected_index'] += 1
             else:
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
-                st.write("You have reached the end of the data.")
+                st.write("All texts have been processed :)  Thank you for participation 🩷")
                 st.balloons()  # Streamlit balloons
                 st.stop()
 
