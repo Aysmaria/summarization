@@ -273,7 +273,6 @@ if user_name:
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
             else:
-
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
                 st.write("You have reached the end of the data.")
                 user_opinion = st.text_input("Please enter your opinion about the data processing:")
@@ -290,7 +289,7 @@ if user_name:
 
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
-                    st.stop()
+                    # st.stop()  # Temporarily commented out
 
             # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
