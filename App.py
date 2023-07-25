@@ -144,7 +144,7 @@ if user_name:
         ###### START ANALYSIS
         selected_index = st.session_state['selected_index']
 
-        text_number = st.number_input('Enter text number to jump to', min_value=1, max_value=len(user_data),
+        text_number = st.number_input('Enter text number to jump to', min_value=1, max_value=len(user_data)-1,
                                       value=1)
         if st.button('Jump to text number'):
             st.session_state['selected_index'] = text_number
