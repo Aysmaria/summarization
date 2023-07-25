@@ -274,6 +274,7 @@ if user_name:
                 st.session_state['selected_index'] += 1
             else:
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
+
                 # Ask for user's opinion
                 if 'user_opinion' not in st.session_state:
                     st.session_state['user_opinion'] = ''
@@ -281,10 +282,20 @@ if user_name:
                                                                  value=st.session_state['user_opinion'])
 
                 submit_button = st.button("Submit Opinion")
+
                 if submit_button:
-                    user_data.at[selected_index, 'User Opinion'] = st.session_state['user_opinion'] if st.session_state[
-                        'user_opinion'] else "No opinion given"
-                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+                    # Create a new DataFrame to store user opinions
+                    if 'opinions_data' not in st.session_state:
+                        st.session_state['opinions_data'] = pd.DataFrame(columns=['User Name', 'User Opinion'])
+
+                    # Add the user's opinion as a new row in the DataFrame
+                    st.session_state['opinions_data'] = st.session_state['opinions_data'].append(
+                        {'User Name': st.session_state['user_name'], 'User Opinion': st.session_state['user_opinion']},
+                        ignore_index=True)
+
+                    # Save the updated data
+                    save_data("user_opinions", st.session_state['user_name'], st.session_state['opinions_data'])
+
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
                     st.stop()
