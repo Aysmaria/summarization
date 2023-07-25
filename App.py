@@ -274,22 +274,9 @@ if user_name:
                 st.session_state['selected_index'] += 1
             else:
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
-                st.write("You have reached the end of the data.")
-                user_opinion = st.text_input("Please enter your opinion about the data processing:")
-                st.session_state['user_opinion'] = user_opinion  # Store the user opinion in session state
-
-                submit_button = st.button("Submit")
-
-                if submit_button:
-                    user_data.at[selected_index, 'User Opinion'] = st.session_state['user_opinion']
-                    print(f"Updated user opinion: {user_data.at[selected_index, 'User Opinion']}")  # Debug print
-
-                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-                    print("Data saved")  # Debug print
-
-                    st.write("All texts have been processed :)  Thank you for participation 🩷")
-                    st.balloons()  # Streamlit balloons
-                    # st.stop()  # Temporarily commented out
+                st.write("All texts have been processed :)  Thank you for participation 🩷")
+                st.balloons()  # Streamlit balloons
+                st.stop()  # Temporarily commented out
 
             # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
