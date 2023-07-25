@@ -275,10 +275,15 @@ if user_name:
             else:
                 st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed
                 # Ask for user's opinion
-                user_opinion = st.text_input("Please enter your opinion about the data processing:")
+                if 'user_opinion' not in st.session_state:
+                    st.session_state['user_opinion'] = ''
+                st.session_state['user_opinion'] = st.text_input("Please enter your opinion about the data processing:",
+                                                                 value=st.session_state['user_opinion'])
+
                 submit_button = st.button("Submit Opinion")
                 if submit_button:
-                    user_data.at[selected_index, 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                    user_data.at[selected_index, 'User Opinion'] = st.session_state['user_opinion'] if st.session_state[
+                        'user_opinion'] else "No opinion given"
                     save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
