@@ -273,25 +273,25 @@ if user_name:
                 # st.stop()
                 # All texts have been processed, ask for the user's opinion.
                 # Continue with the text processing as usual
-
-
-            elif st.session_state['selected_index'] == len(user_data) - 1:
-                st.write("All texts have been processed :) You are a hero! 🚀")
-                user_opinion = st.text_area("Please share your overall experience. What do you think about the generated summaries?")
-                submit_button = st.button("Submit")
-                if submit_button:
-                    user_data.at[
-                        selected_index, 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
-                            # Save the updated data to the worksheet
-                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-
-                    st.session_state[
-                                'all_processed'] = True  # Update all_processed when user's opinion has been submitted
-                    st.write("All data is saved :)  Thank you for participation 🩷")
-                    st.balloons()  # Streamlit balloons
-                    st.stop()
-
             for criterion in criteria:
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
+
+        if st.session_state['selected_index'] == len(user_data) - 1:
+            st.write("All texts have been processed :) You are a hero! 🚀")
+            user_opinion = st.text_area(
+                "Please share your overall experience. What do you think about the generated summaries?")
+            submit_button = st.button("Submit")
+            if submit_button:
+                user_data.at[
+                    st.session_state[
+                        'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                # Save the updated data to the worksheet
+                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
+                st.session_state[
+                    'all_processed'] = True  # Update all_processed when user's opinion has been submitted
+                st.write("All data is saved :)  Thank you for participation 🩷")
+                st.balloons()  # Streamlit balloons
+                st.stop()
