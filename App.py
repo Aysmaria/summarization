@@ -268,7 +268,7 @@ if user_name:
                 st.session_state['selected_index'] += 1
             elif st.session_state['selected_index'] == len(user_data) - 1:
                 if 'processed_last' in st.session_state and st.session_state['processed_last']:
-                    # Get user opinion
+                    st.write("All texts have been processed :) You are a hero! 🚀")
                     user_opinion = st.text_area(
                         "Please share your overall experience. What do you think about the generated summaries?")
                     submit_button = st.button("Submit")
@@ -284,7 +284,10 @@ if user_name:
                         st.write("All data is saved :)  Thank you for participation 🩷")
                         st.balloons()  # Streamlit balloons
                         st.stop()
-                else:
+
+
+
+                 else:
                     st.session_state['processed_last'] = True
 
             for criterion in criteria:
