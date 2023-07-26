@@ -309,13 +309,13 @@ if user_name:
                 st.session_state['selected_index'] = 0  # or any other default value
 
             if st.session_state['selected_index'] < len(user_data) - 1:  # If not the last text
-                next_button = st.button("Next")
+                next_button = st.button("Next", key='next_button')
             else:  # If last text
                 next_button = False
                 st.write("All texts have been processed :) You are a hero! 🚀")
                 user_opinion = st.text_area(
                     "Please share your overall experience. What do you think about the generated summaries?")
-                finish_button = st.button("Finish")
+                finish_button = st.button("Finish", key='finish_button')
 
             if next_button or finish_button:  # If "Next" or "Finish" is clicked
                 scores = [st.session_state[criterion] for criterion in criteria]
