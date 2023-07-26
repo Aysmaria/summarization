@@ -268,10 +268,22 @@ if user_name:
                 st.session_state['selected_index'] += 1
             elif st.session_state['selected_index'] == len(user_data) - 1:
                 if 'processed_last' in st.session_state and st.session_state['processed_last']:
-                    st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
-                    st.write("All texts have been processed :)  Thank you for participation 🩷")
-                    st.balloons()
-                    st.stop()
+                    # Get user opinion
+                    user_opinion = st.text_area(
+                        "Please share your overall experience. What do you think about the generated summaries?")
+                    submit_button = st.button("Submit")
+                    if submit_button:
+                        user_data.at[
+                            st.session_state[
+                                'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                        # Save the updated data to the worksheet
+                        save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
+                        st.session_state[
+                            'all_processed'] = True  # Update all_processed when user's opinion has been submitted
+                        st.write("All data is saved :)  Thank you for participation 🩷")
+                        st.balloons()  # Streamlit balloons
+                        st.stop()
                 else:
                     st.session_state['processed_last'] = True
 
