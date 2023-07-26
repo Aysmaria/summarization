@@ -269,13 +269,12 @@ if user_name:
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
             elif st.session_state['selected_index'] == len(user_data) - 1:
-                if 'processed_last' in st.session_state and st.session_state['processed_last']:
                     st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
                     st.write("All texts have been processed :) You are a hero! 🚀")
                     # st.balloons()
                     #st.stop()
                 else:
-                    st.session_state['processed_last'] = True
+                    #st.session_state['processed_last'] = True
                     st.session_state['selected_index'] += 1
 
             for criterion in criteria:
