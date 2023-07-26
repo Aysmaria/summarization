@@ -122,7 +122,9 @@ While I am working on my master's thesis entitled "Automatic text summarization 
 To start, you need to choose a nickname. Your task is to evaluate the summaries based on certain criteria listed on the left side of the screen. Click the info button to understand what each criterion contains. A five-point scale is used to evaluate each element: 1. Very poor, 2. Poor, 3. Barely acceptable, 4. Good, 5. Very good.\n
 At the beginning of the evaluation, you will come across 78 texts but do not be discouraged. You only need to review 6 unique texts along with their 13 respective shortened summaries.\n
 If your session is interrupted, simply enter your nickname and text number to continue from where you left off. At the top of the page, you will see a sign saying "running". This means that your response will be processed and you will soon be redirected to the next text. \n
-The whole process should take about 30 minutes of your time. Please complete the survey on your computer. Be mindful to ensure that the selected value in the sidebar remains consistent before proceeding to the next section. \n IMPORTANT! Please evaluate EACH generated summary, if you skipped some summaries your evaluation is NOT VALID \n I appreciate your support very much! 💕
+The whole process should take about 30 minutes of your time. Please complete the survey on your computer. Be mindful to ensure that the selected value in the sidebar remains consistent before proceeding to the next section. \n 
+IMPORTANT!⚠️ Please evaluate EACH generated summary, if you skipped some summaries your evaluation is NOT VALID. \n 
+I appreciate your support very much! 💕
     """)
 st.write("Please provide your name:")
 
