@@ -273,8 +273,7 @@ if user_name:
                 # st.stop()
                 # All texts have been processed, ask for the user's opinion.
                 # Continue with the text processing as usual
-            else:
-                st.write("All texts have been processed :) You are a hero! 🚀")
+
 
             for criterion in criteria:
                 st.session_state[criterion] = 0
@@ -282,6 +281,7 @@ if user_name:
                 st.session_state['category'] = categories[0]
 
         if st.session_state['selected_index'] == len(user_data) - 1:
+                st.write("All texts have been processed :) You are a hero! 🚀")
                 user_opinion = st.text_area("Please share your overall experience. What do you think about the generated summaries?")
                 submit_button = st.button("Submit")
                 if submit_button:
