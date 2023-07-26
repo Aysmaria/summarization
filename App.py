@@ -270,7 +270,7 @@ if user_name:
                 st.session_state['selected_index'] += 1
             elif st.session_state['selected_index'] == len(user_data) - 1:
                     st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
-                    st.write("All texts have been processed :) You are a hero! 🚀")
+                    #st.write("All texts have been processed :) You are a hero! 🚀")
                     # st.balloons()
                     #st.stop()
             else:
@@ -284,6 +284,7 @@ if user_name:
             st.experimental_rerun()
 
         if st.session_state['all_processed'] == True:
+            st.write("All texts have been processed :) You are a hero! 🚀")
             user_opinion = st.text_area(
                 "Please share your overall experience. What do you think about the generated summaries?")
             submit_button = st.button("Submit")
