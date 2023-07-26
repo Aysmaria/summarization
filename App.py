@@ -274,15 +274,15 @@ if user_name:
                 # All texts have been processed, ask for the user's opinion.
                 # Continue with the text processing as usual
             else:
-                st.write("You have reached the end of the data.")
-                # Outside of the 'Next' button click event
+                st.write("All texts have been processed :) You are a hero! 🚀")
+
             for criterion in criteria:
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
 
         if st.session_state['selected_index'] == len(user_data) - 1:
-                user_opinion = st.text_input("Please enter your opinion about the data processing:")
+                user_opinion = st.text_area("Please share your overall experience. What do you think about the generated summaries?")
                 submit_button = st.button("Submit")
                 if submit_button:
                     user_data.at[
@@ -292,7 +292,7 @@ if user_name:
 
                     st.session_state[
                             'all_processed'] = True  # Update all_processed when user's opinion has been submitted
-                    st.write("All texts have been processed :)  Thank you for participation 🩷")
+                    st.write("All data is saved :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
                     st.stop()
 
