@@ -317,7 +317,7 @@ if user_name:
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
 
-        if st.session_state['selected_index'] == len(user_data) - 1:
+        if st.session_state['selected_index'] == len(user_data) + 1:
             st.write("All texts have been processed :) You are a hero! 🚀")
 
             # Save data for last text
