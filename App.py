@@ -264,19 +264,13 @@ if user_name:
 
             if 'selected_index' not in st.session_state:
                 st.session_state['selected_index'] = 0  # or any other default value
-
-            # Now it's safe to use st.session_state['selected_index'].
-            # st.session_state['selected_index'] = (st.session_state['selected_index'] + 1) % len(user_data)
-            # Check if we're at the end of the user data, if not, increment the selected index
-            if 'selected_index' not in st.session_state:
-                st.session_state['selected_index'] = 0  # or any other default value
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
             else:
-                st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
-                st.write("All texts have been processed :)  Thank you for participation 🩷")
-                st.balloons()  # Streamlit balloons
-                st.stop()  # Temporarily commented out
+                # st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
+                # st.write("All texts have been processed :)  Thank you for participation 🩷")
+                # st.balloons()
+                # st.stop()
 
             # Reset the scores, comment, and category in the session_state
             for criterion in criteria:
