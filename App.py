@@ -281,7 +281,7 @@ if user_name:
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
-                st.experimental_rerun()
+            st.experimental_rerun()
 
         if st.session_state['all_processed'] == True:
             user_opinion = st.text_area(
