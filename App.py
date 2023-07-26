@@ -276,6 +276,11 @@ if user_name:
             else:
                 st.write("You have reached the end of the data.")
                 # Outside of the 'Next' button click event
+            for criterion in criteria:
+                st.session_state[criterion] = 0
+                st.session_state['comment'] = ''
+                st.session_state['category'] = categories[0]
+
         if st.session_state['selected_index'] == len(user_data) - 1:
                 user_opinion = st.text_input("Please enter your opinion about the data processing:")
                 submit_button = st.button("Submit")
@@ -294,10 +299,7 @@ if user_name:
 
 
                         # Reset the scores, comment, and category in the session_state
-            for criterion in criteria:
-                st.session_state[criterion] = 0
-                st.session_state['comment'] = ''
-                st.session_state['category'] = categories[0]
+
 
 
 
