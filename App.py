@@ -272,7 +272,7 @@ if user_name:
                 # st.balloons()
                 # st.stop()
                 # All texts have been processed, ask for the user's opinion.
-                st.session_state['all_processed'] = True
+                # All texts have been processed, ask for the user's opinion.
                 st.write("You have reached the end of the data.")
                 user_opinion = st.text_input("Please enter your opinion about the data processing:")
 
@@ -283,6 +283,9 @@ if user_name:
 
                         # Save the updated data to the worksheet
                     save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
+                    st.session_state[
+                            'all_processed'] = True  # Update all_processed after user's opinion has been submitted
 
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
                     st.balloons()  # Streamlit balloons
