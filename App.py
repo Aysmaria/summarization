@@ -138,7 +138,7 @@ if user_name:
             # When the user name changes or the app restarts, start from the beginning
         st.session_state['selected_index'] = 0
 
-    if 'user_data' in st.session_state and not st.session_state['all_processed']:
+    if 'user_data' in st.session_state: # and not st.session_state['all_processed']
         user_data = st.session_state['user_data']
         print(len(user_data))
         ###### START ANALYSIS
@@ -291,9 +291,7 @@ if user_name:
                         'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
                 # Save the updated data to the worksheet
                 save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-
-                st.session_state[
-                    'all_processed'] = True  # Update all_processed when user's opinion has been submitted
+                  # Update all_processed when user's opinion has been submitted
                 st.write("All data is saved :)  Thank you for participation 🩷")
                 st.balloons()  # Streamlit balloons
                 st.stop()
