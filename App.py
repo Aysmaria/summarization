@@ -270,7 +270,7 @@ if user_name:
                 if 'processed_last' in st.session_state and st.session_state['processed_last']:
                     st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
                     st.write("All texts have been processed :)  Thank you for participation 🩷")
-                    st.balloons()
+                    # st.balloons()
                     #st.stop()
                 else:
                     st.session_state['processed_last'] = True
@@ -280,7 +280,7 @@ if user_name:
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
 
-        if st.session_state['selected_index'] == len(user_data) - 1:
+        if st.session_state['all_processed'] == True:
             st.write("All texts have been processed :) You are a hero! 🚀")
             user_opinion = st.text_area(
                 "Please share your overall experience. What do you think about the generated summaries?")
