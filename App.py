@@ -253,8 +253,6 @@ if user_name:
                         st.write(f"{column}: {selected_row[column]}")
 
         if st.button("Next"):
-            st.session_state.next_button_pressed = True
-        if 'next_button_pressed' in st.session_state and st.session_state.next_button_pressed:
             scores = [st.session_state[criterion] for criterion in criteria]
             for i, criterion in enumerate(criteria):
                 # UPDATE DATA
@@ -283,8 +281,7 @@ if user_name:
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
-                # Reset the button press flag
-            st.session_state.next_button_pressed = False
+                st.experimental_rerun()
 
         if st.session_state['all_processed'] == True:
             user_opinion = st.text_area(
