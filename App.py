@@ -307,31 +307,44 @@ if user_name:
 
             if 'selected_index' not in st.session_state:
                 st.session_state['selected_index'] = 0  # or any other default value
-            elif st.session_state['selected_index'] < len(user_data) - 1:
+
+            if st.session_state['selected_index'] < len(user_data) - 1:  # If not the last text
+                next_button = st.button("Next")
+            else:  # If last text
+                next_button = False
+                st.write("All texts have been processed :) You are a hero! 🚀")
+                user_opinion = st.text_area(
+                    "Please share your overall experience. What do you think about the generated summaries?")
+                finish_button = st.button("Finish")
+
+            if next_button or finish_button:  # If "Next" or "Finish" is clicked
+                scores = [st.session_state[criterion] for criterion in criteria]
+                for i, criterion in enumerate(criteria):
+                    # UPDATE DATA
+                    user_data.at[st.session_state['selected_index'], criterion] = scores[i]
+
+                user_data.at[st.session_state['selected_index'], 'Comment'] = st.session_state['comment']
+                user_data.at[st.session_state['selected_index'], 'Category'] = st.session_state['category']
+
                 # Save the updated data to the worksheet
                 save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-                st.session_state['selected_index'] += 1
 
-            for criterion in criteria:
+                if next_button:  # If "Next" is clicked, increment the index
+                    st.session_state['selected_index'] += 1
+                elif finish_button:  # If "Finish" is clicked, save the overall opinion and finish
+                    user_data.at[st.session_state[
+                                     'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                    # Save the updated data to the worksheet, including the user's overall opinion
+                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
+                    st.session_state[
+                        'all_processed'] = True  # Update all_processed when user's opinion has been submitted
+                    st.write("All data is saved :) Thank you for participation 🩷")
+                    st.balloons()  # Streamlit balloons
+                    st.stop()
+
+            for criterion in criteria:  # Reset the scores, comment, and category in the session_state
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
                 st.session_state['category'] = categories[0]
-
-        if st.session_state['selected_index'] == len(user_data) - 1:
-            st.write("All texts have been processed :) You are a hero! 🚀")
-            user_opinion = st.text_area(
-                "Please share your overall experience. What do you think about the generated summaries?")
-            submit_button = st.button("Submit")
-            if submit_button:
-                user_data.at[
-                    st.session_state[
-                        'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
-                # Save the updated data to the worksheet
-                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-
-                st.session_state[
-                    'all_processed'] = True  # Update all_processed when user's opinion has been submitted
-                st.write("All data is saved :)  Thank you for participation 🩷")
-                st.balloons()  # Streamlit balloons
-                st.stop()
 
