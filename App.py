@@ -312,8 +312,6 @@ if user_name:
                 save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                 st.session_state['selected_index'] += 1
 
-            save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
-                #st.session_state['selected_index']
             for criterion in criteria:
                 st.session_state[criterion] = 0
                 st.session_state['comment'] = ''
@@ -321,6 +319,10 @@ if user_name:
 
         if st.session_state['selected_index'] == len(user_data) - 1:
             st.write("All texts have been processed :) You are a hero! 🚀")
+
+            # Save data for last text
+            save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
             user_opinion = st.text_area(
                 "Please share your overall experience. What do you think about the generated summaries?")
             submit_button = st.button("Submit")
@@ -336,4 +338,5 @@ if user_name:
                 st.write("All data is saved :)  Thank you for participation 🩷")
                 st.balloons()  # Streamlit balloons
                 st.stop()
+
 
