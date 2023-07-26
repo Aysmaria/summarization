@@ -311,8 +311,8 @@ if user_name:
                 # Save the updated data to the worksheet
                 save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                 st.session_state['selected_index'] += 1
-            else:
-                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
+
+            save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                 #st.session_state['selected_index']
             for criterion in criteria:
                 st.session_state[criterion] = 0
