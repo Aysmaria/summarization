@@ -316,11 +316,11 @@ if user_name:
                 user_opinion = st.text_area(
                     "Please share your overall experience. What do you think about the generated summaries?")
                 submit_button = st.button("Submit")
-                user_data.at[st.session_state[
-                                 'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
-                # Save the updated data to the worksheet, including the user's overall opinion
-                save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                 if submit_button:  # If user has given their opinion
+                    user_data.at[st.session_state[
+                                     'selected_index'], 'User Opinion'] = user_opinion if user_opinion else "No opinion given"
+                    # Save the updated data to the worksheet, including the user's overall opinion
+                    save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
                     st.session_state[
                         'all_processed'] = True  # Update all_processed when user's opinion has been submitted
                     st.write("All data is saved :)  Thank you for participation 🩷")
