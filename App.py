@@ -273,9 +273,9 @@ if user_name:
                     st.write("All texts have been processed :) You are a hero! 🚀")
                     # st.balloons()
                     #st.stop()
-                else:
+            else:
                     #st.session_state['processed_last'] = True
-                    st.session_state['selected_index'] += 1
+                st.session_state['selected_index'] += 1
 
             for criterion in criteria:
                 st.session_state[criterion] = 0
