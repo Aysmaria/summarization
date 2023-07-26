@@ -264,18 +264,19 @@ if user_name:
             # Save the updated data to the worksheet
             save_data("sorted_FINAL_DATA", st.session_state['user_name'], user_data)
 
+            # Increment index or show completion message when all texts have been processed
             if 'selected_index' not in st.session_state:
                 st.session_state['selected_index'] = 0  # or any other default value
             elif st.session_state['selected_index'] < len(user_data) - 1:
                 st.session_state['selected_index'] += 1
-            elif st.session_state['selected_index'] == len(user_data) - 1:
+            else:  # When you reach the last text
                 if 'processed_last' in st.session_state and st.session_state['processed_last']:
                     st.session_state['all_processed'] = True  # Update all_processed when all texts have been processed.
                     st.write("All texts have been processed :) You are a hero! 🚀")
-                    # st.balloons()
-                    #st.stop()
                 else:
                     st.session_state['processed_last'] = True
+                    st.session_state[
+                        'selected_index'] += 1  # Still increment the index to trigger the opinion asking part
 
             for criterion in criteria:
                 st.session_state[criterion] = 0
